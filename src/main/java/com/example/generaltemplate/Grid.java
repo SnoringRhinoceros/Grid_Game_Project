@@ -1,13 +1,17 @@
 package com.example.generaltemplate;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import static com.example.generaltemplate.GameController.makeImg;
 
 public class Grid {
     private final int GRID_SIZE = 20;
     private final int BUTTON_SIZE = 20;
     private Cell[][] cells;
     private Button[][] buttons;
+    private final Image BLANK_CELL_IMG = makeImg("src/main/resources/com/example/generaltemplate/img/background.png");
 
     public Grid() {
         cells = new Cell[GRID_SIZE][GRID_SIZE];
@@ -27,7 +31,12 @@ public class Grid {
     public void update() {
         for (int row = 0; row < buttons.length; row++) {
             for (int col = 0; col < buttons[row].length; col++) {
-                ImageView img = new ImageView();
+                ImageView img;
+                if (cells[row][col].hasPiece()) {
+                    img = new ImageView(cells[row][col].getPiece().getImg());
+                } else {
+                    img = new ImageView(BLANK_CELL_IMG);
+                }
                 img.setFitHeight(BUTTON_SIZE);
                 img.setPreserveRatio(true);
                 buttons[row][col].setGraphic(img);

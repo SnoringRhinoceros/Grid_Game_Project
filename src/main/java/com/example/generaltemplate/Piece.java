@@ -1,9 +1,25 @@
 package com.example.generaltemplate;
 
-public class Piece {
-    private PieceTypes pieceType;
+import javafx.scene.image.Image;
 
-    public Piece(PieceTypes pieceType) {
-        this.pieceType = pieceType;
+import static com.example.generaltemplate.GameController.makeImg;
+
+public enum Piece {
+    BASIC("basic", "src/main/resources/com/example/generaltemplate/img/red/basic_piece.png");
+
+    private String name;
+    private Image img;
+
+    Piece(String name, String imgPath) {
+        this.name = name;
+        this.img = makeImg(imgPath);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Image getImg() {
+        return img;
     }
 }

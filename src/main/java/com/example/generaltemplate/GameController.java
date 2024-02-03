@@ -21,7 +21,7 @@ public class GameController {
     private int selectedRow;
     private int selectedCol;
 
-    public static Image makeImage(String imgPath) {
+    public static Image makeImg(String imgPath) {
         try {
             return new Image(new FileInputStream(imgPath));
         } catch (FileNotFoundException e) {
@@ -37,6 +37,8 @@ public class GameController {
             selectedRow = GridPane.getRowIndex((Button) event.getSource());
             selectedCol = GridPane.getColumnIndex((Button) event.getSource());
             System.out.println(selectedRow + "," + selectedCol);
+            game.getGrid().getCells()[selectedRow][selectedCol].setPiece(Piece.BASIC);
+            update();
         };
 
         game = new Game();
