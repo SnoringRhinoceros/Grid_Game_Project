@@ -3,21 +3,14 @@ package com.example.generaltemplate;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class GameController {
     @FXML
     public GridPane board;
     private Game game;
-    public GameController() {
-
-    }
+    private MyScreenController myScreenController;
 
     @FXML
     public void initialize() {
@@ -31,6 +24,15 @@ public class GameController {
 
         board.setAlignment(Pos.CENTER);
         board.setGridLinesVisible(true);
+
+        myScreenController = new MyScreenController();
+
+        MyScreen playView = new MyScreen("playView");
+        playView.addFXMLElement(board);
+        myScreenController.add(playView);
+
+        myScreenController.activate("playView");
+
         update();
     }
 
