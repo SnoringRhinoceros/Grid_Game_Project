@@ -1,5 +1,7 @@
 package com.example.generaltemplate;
 
+import javafx.scene.layout.GridPane;
+
 public class Game {
     private Grid grid;
 
