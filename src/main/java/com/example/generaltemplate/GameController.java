@@ -37,8 +37,8 @@ public class GameController {
             selectedRow = GridPane.getRowIndex((Button) event.getSource());
             selectedCol = GridPane.getColumnIndex((Button) event.getSource());
             System.out.println(selectedRow + "," + selectedCol);
-            game.getGrid().getCells()[selectedRow][selectedCol].setPiece(Piece.BASIC);
-            update();
+            game.playPiece(selectedRow, selectedCol, Movement.RIGHT);
+            game.simulateTurn();
         };
 
         game = new Game();
@@ -48,7 +48,6 @@ public class GameController {
                 game.getGrid().getButtons()[i][j].setOnAction(handleBoardClick);
             }
         }
-
         board.setAlignment(Pos.CENTER);
         board.setGridLinesVisible(true);
 
@@ -65,6 +64,6 @@ public class GameController {
 
 
     private void update() {
-        game.getGrid().update();
+        game.update();
     }
 }

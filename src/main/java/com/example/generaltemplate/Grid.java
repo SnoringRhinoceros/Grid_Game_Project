@@ -29,8 +29,8 @@ public class Grid {
     }
 
     public void update() {
-        for (int row = 0; row < buttons.length; row++) {
-            for (int col = 0; col < buttons[row].length; col++) {
+        for (int row = 0; row < cells.length; row++) {
+            for (int col = 0; col < cells[row].length; col++) {
                 ImageView img;
                 if (cells[row][col].hasPiece()) {
                     img = new ImageView(cells[row][col].getPiece().getImg());
@@ -43,6 +43,15 @@ public class Grid {
                 buttons[row][col].setStyle(cells[row][col].getTerrainType().getCSS());
             }
         }
+    }
+
+    public void movePiece(int oldRow, int oldCol, int newRow, int newCol) {
+        cells[newRow][newCol].setPiece(cells[oldRow][oldCol].getPiece());
+        cells[oldRow][oldCol].setPiece(null);
+    }
+
+    public boolean checkLocValid(int row, int col) {
+        return 0 <= row && row < cells.length && 0 <= col && col < cells[0].length;
     }
 
     public Cell[][] getCells() {

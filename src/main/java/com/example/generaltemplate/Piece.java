@@ -9,10 +9,13 @@ public enum Piece {
 
     private String name;
     private Image img;
+    private Movement movement;
+    private boolean movedAlready;
 
     Piece(String name, String imgPath) {
         this.name = name;
         this.img = makeImg(imgPath);
+        this.movement = Movement.STILL;
     }
 
     public String getName() {
@@ -21,5 +24,21 @@ public enum Piece {
 
     public Image getImg() {
         return img;
+    }
+
+    public Movement getMovement() {
+        return movement;
+    }
+
+    public void setMovement(Movement movement) {
+        this.movement = movement;
+    }
+
+    public boolean isMovedAlready() {
+        return movedAlready;
+    }
+
+    public void setMovedAlready(boolean movedAlready) {
+        this.movedAlready = movedAlready;
     }
 }
