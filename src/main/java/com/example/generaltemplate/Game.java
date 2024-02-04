@@ -2,12 +2,19 @@ package com.example.generaltemplate;
 
 import javafx.animation.AnimationTimer;
 
+import java.util.ArrayList;
+
 public class Game {
-    private Grid grid;
+    private final Grid grid;
     private long simulationStartTime;
+
+    private final ArrayList<Player> players = new ArrayList<>();
+    private int turnNum = 0;
 
     public Game() {
         grid = new Grid();
+        players.add(new Player("p1", "red"));
+        players.add(new Player("p2", "blue"));
     }
 
     public Grid getGrid() {
@@ -26,7 +33,11 @@ public class Game {
     }
 
     public void playPiece(int selectedRow, int selectedCol, Movement movement) {
-        grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BASIC, movement));
+        if (getCurrentPlayer().getColor().equals("red")) {
+            grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.RED_BASIC, movement));
+        } else if (getCurrentPlayer().getColor().equals("blue")) {
+            grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BLUE_BASIC, movement));
+        }
         update();
     }
 
@@ -50,6 +61,7 @@ public class Game {
                                         break;
                                     } else {
                                         cell.getPiece().setMovement(Movement.STILL);
+                                        turnNum++;
                                     }
                                     doneSimulating = false;
                                 }
@@ -67,6 +79,10 @@ public class Game {
                 }
             }
         }.start();
+    }
+
+    private Player getCurrentPlayer() {
+        return players.get(turnNum % players.size());
     }
 
     public void update() {

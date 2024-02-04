@@ -5,7 +5,8 @@ import javafx.scene.image.Image;
 import static com.example.generaltemplate.GameController.makeImg;
 
 public enum PieceType {
-    BASIC("basic", "src/main/resources/com/example/generaltemplate/img/red/basic_piece.png");
+    RED_BASIC("red_basic", "src/main/resources/com/example/generaltemplate/img/red/basic_piece.png"),
+    BLUE_BASIC("blue_basic", "src/main/resources/com/example/generaltemplate/img/blue/basic_piece.png");
 
     private String name;
     private Image img;
