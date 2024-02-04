@@ -14,6 +14,10 @@ public class Game {
         return grid;
     }
 
+    public boolean piecePlayable(int selectedRow, int selectedCol, Movement movement) {
+        return !grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece();
+    }
+
     public void playPiece(int selectedRow, int selectedCol, Movement movement) {
         grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BASIC, movement));
         update();
