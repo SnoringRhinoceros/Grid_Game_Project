@@ -15,6 +15,13 @@ public class Game {
     }
 
     public boolean piecePlayable(int selectedRow, int selectedCol, Movement movement) {
+        for (int i = 0; i < grid.getCells().length; i++) {
+            for (int j = 0; j < grid.getCells()[i].length; j++) {
+                if (grid.getCells()[i][j].hasPiece() && !grid.getCells()[i][j].getPiece().getMovement().equals(Movement.STILL)) {
+                    return false;
+                }
+            }
+        }
         return !grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece();
     }
 
