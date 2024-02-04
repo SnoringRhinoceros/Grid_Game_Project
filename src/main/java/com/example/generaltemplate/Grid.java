@@ -33,7 +33,7 @@ public class Grid {
             for (int col = 0; col < cells[row].length; col++) {
                 ImageView img;
                 if (cells[row][col].hasPiece()) {
-                    img = new ImageView(cells[row][col].getPiece().getImg());
+                    img = new ImageView(cells[row][col].getPiece().getPieceType().getImg());
                 } else {
                     img = new ImageView(BLANK_CELL_IMG);
                 }

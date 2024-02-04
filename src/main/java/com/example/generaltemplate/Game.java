@@ -15,8 +15,7 @@ public class Game {
     }
 
     public void playPiece(int selectedRow, int selectedCol, Movement movement) {
-        grid.getCells()[selectedRow][selectedCol].setPiece(Piece.BASIC);
-        grid.getCells()[selectedRow][selectedCol].getPiece().setMovement(movement);
+        grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BASIC, movement));
         update();
     }
 
@@ -26,27 +25,27 @@ public class Game {
             @Override
             public void handle(long now) {
                 if (now - simulationStartTime > 100000000.0) {
-                    for (int row = 0; row < grid.getCells().length; row++) {
-                        for (int col = 0; col < grid.getCells()[row].length; col++) {
-                            if (grid.getCells()[row][col].hasPiece()) {
-                                grid.getCells()[row][col].getPiece().setMovedAlready(false);
-                            }
-                        }
-                    }
-
                     boolean doneSimulating = true;
+                    boolean broken = false;
                     for (int row = 0; row < grid.getCells().length; row++) {
                         for (int col = 0; col < grid.getCells()[row].length; col++) {
                             Cell cell = grid.getCells()[row][col];
                             if (cell.hasPiece()) {
-                                if (cell.getPiece().getMovement() != Movement.STILL && !cell.getPiece().isMovedAlready()) {
+                                if (cell.getPiece().getMovement() != Movement.STILL) {
                                     if (grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
-                                        cell.getPiece().setMovedAlready(true);
                                         grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
+                                        doneSimulating = false;
+                                        broken = true;
+                                        break;
+                                    } else {
+                                        cell.getPiece().setMovement(Movement.STILL);
                                     }
                                     doneSimulating = false;
                                 }
                             }
+                        }
+                        if (broken) {
+                            break;
                         }
                     }
                     if (doneSimulating) {
