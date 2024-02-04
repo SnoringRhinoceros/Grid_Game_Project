@@ -51,7 +51,7 @@ public class Grid {
     }
 
     public boolean checkLocValid(int row, int col) {
-        return 0 <= row && row < cells.length && 0 <= col && col < cells[0].length;
+        return 1 <= row && row < cells.length-1 && 1 <= col && col < cells[0].length-1;
     }
 
     public Cell[][] getCells() {

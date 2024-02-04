@@ -25,7 +25,7 @@ public class Game {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (now - simulationStartTime > 1000000000.0) {
+                if (now - simulationStartTime > 100000000.0) {
                     for (int row = 0; row < grid.getCells().length; row++) {
                         for (int col = 0; col < grid.getCells()[row].length; col++) {
                             if (grid.getCells()[row][col].hasPiece()) {

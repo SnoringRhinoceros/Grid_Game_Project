@@ -37,7 +37,17 @@ public class GameController {
             selectedRow = GridPane.getRowIndex((Button) event.getSource());
             selectedCol = GridPane.getColumnIndex((Button) event.getSource());
             System.out.println(selectedRow + "," + selectedCol);
-            game.playPiece(selectedRow, selectedCol, Movement.RIGHT);
+            Movement movement = Movement.STILL;
+            if (selectedRow == 0) {
+                movement = Movement.DOWN;
+            } else if (selectedRow == game.getGrid().getCells().length-1) {
+                movement = Movement.UP;
+            } else if (selectedCol == 0) {
+                movement = Movement.RIGHT;
+            } else if (selectedCol == game.getGrid().getCells()[0].length-1) {
+                movement = Movement.LEFT;
+            }
+            game.playPiece(selectedRow, selectedCol, movement);
             game.simulateTurn();
         };
 
