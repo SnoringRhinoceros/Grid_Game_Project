@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ public class GameController {
     private MyScreenController myScreenController;
     private int selectedRow;
     private int selectedCol;
+    private PieceType selectedPiece;
 
     public static Image makeImg(String imgPath) {
         try {
@@ -35,26 +37,43 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        EventHandler<MouseEvent> handleOwnedPiecesListViewClick = event -> {
+            String selectedName = ownedPiecesListView.getSelectionModel().getSelectedItem();
+            if (selectedName != null) {
+                for (PieceType pieceType: PieceType.values()) {
+                    if (pieceType.getName().equals(selectedName)) {
+                        selectedPiece = pieceType;
+                    }
+                }
+            } else {
+                selectedPiece = null;
+            }
+        };
+
+        ownedPiecesListView.setOnMouseClicked(handleOwnedPiecesListViewClick);
+
         EventHandler<ActionEvent> handleBoardClick = event -> {
 
             selectedRow = GridPane.getRowIndex((Button) event.getSource());
             selectedCol = GridPane.getColumnIndex((Button) event.getSource());
             System.out.println(selectedRow + "," + selectedCol);
 
-            Movement movement = Movement.STILL;
-            if (selectedRow == 0) {
-                movement = Movement.DOWN;
-            } else if (selectedRow == game.getGrid().getCells().length-1) {
-                movement = Movement.UP;
-            } else if (selectedCol == 0) {
-                movement = Movement.RIGHT;
-            } else if (selectedCol == game.getGrid().getCells()[0].length-1) {
-                movement = Movement.LEFT;
-            }
+            if (selectedPiece != null) {
+                Movement movement = Movement.STILL;
+                if (selectedRow == 0) {
+                    movement = Movement.DOWN;
+                } else if (selectedRow == game.getGrid().getCells().length-1) {
+                    movement = Movement.UP;
+                } else if (selectedCol == 0) {
+                    movement = Movement.RIGHT;
+                } else if (selectedCol == game.getGrid().getCells()[0].length-1) {
+                    movement = Movement.LEFT;
+                }
 
-            if (game.piecePlayable(selectedRow, selectedCol, movement)) {
-                game.playPiece(selectedRow, selectedCol, movement);
-                game.simulateTurn(this::update);
+                if (game.piecePlayable(selectedRow, selectedCol, movement)) {
+                    game.playPiece(game.getCurrentPlayer(), selectedPiece, selectedRow, selectedCol, movement);
+                    game.simulateTurn(this::switchTurn);
+                }
             }
         };
 
@@ -76,6 +95,11 @@ public class GameController {
 
         myScreenController.activate("playView");
 
+        update();
+    }
+
+    public void switchTurn() {
+        selectedPiece = null;
         update();
     }
 

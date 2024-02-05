@@ -18,6 +18,7 @@ public class Game {
         players.add(new Player("p2", Colors.BLUE));
 
         players.get(0).getPiecesOwned().add(PieceType.BASIC);
+        players.get(1).getPiecesOwned().add(PieceType.BASIC);
     }
 
     public Grid getGrid() {
@@ -28,12 +29,9 @@ public class Game {
         return !(grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece() || turnOngoing);
     }
 
-    public void playPiece(int selectedRow, int selectedCol, Movement movement) {
-        for (Colors color: Colors.values()) {
-            if (getCurrentPlayer().getColor().equals(color)) {
-                grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BASIC, color, movement));
-            }
-        }
+    public void playPiece(Player player, PieceType pieceType, int selectedRow, int selectedCol, Movement movement) {
+        player.getPiecesOwned().remove(pieceType);
+        grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(pieceType, player.getColor(), movement));
         update();
     }
 
