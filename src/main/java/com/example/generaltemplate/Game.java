@@ -13,15 +13,18 @@ public class Game {
     private final ArrayList<Player> players = new ArrayList<>();
     private int turnNum = 0;
     private boolean turnOngoing = false;
+
+    // constants ↓
     private final int EXPLODER_RANGE = 3;
     private final int CHANGER_RANGE = 2;
     private final int SHIELD_RANGE = 1;
     private final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
+    private final int STARTING_MONEY = 100;
 
     public Game() {
         grid = new Grid();
-        players.add(new Player("p1", Colors.RED));
-        players.add(new Player("p2", Colors.BLUE));
+        players.add(new Player("p1", Colors.RED, STARTING_MONEY));
+        players.add(new Player("p2", Colors.BLUE, STARTING_MONEY));
 
         players.get(0).getPiecesOwned().add(PieceType.BASIC);
         players.get(0).getPiecesOwned().add(PieceType.BASIC);

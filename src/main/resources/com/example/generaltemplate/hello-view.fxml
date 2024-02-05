@@ -15,16 +15,26 @@
             <GridPane fx:id="board" layoutX="225.0" layoutY="100.0">
 
       </GridPane>
-            <Label layoutX="56.0" layoutY="135.0" text="Owned Pieces" />
+            <Label layoutX="32.0" layoutY="135.0" text="Owned Pieces">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="buyAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
             <Button fx:id="startBtn" layoutX="383.0" layoutY="414.0" mnemonicParsing="false" text="Start">
                <font>
-                  <Font size="24.0" />
+                  <Font size="36.0" />
                </font>
             </Button>
+            <ListView fx:id="piecesToBuyListView" layoutX="193.0" layoutY="105.0" prefHeight="289.0" prefWidth="200.0" />
+            <Label layoutX="208.0" layoutY="77.0" text="Choose Piece to Buy">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
     </children>

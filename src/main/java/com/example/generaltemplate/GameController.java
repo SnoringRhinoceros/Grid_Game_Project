@@ -20,15 +20,14 @@ public class GameController {
     @FXML
     public GridPane board;
     @FXML
-    public ListView<String> ownedPiecesListView;
+    public ListView<String> ownedPiecesListView, piecesToBuyListView;
     @FXML
     public AnchorPane gameAnchorPane, buyAnchorPane;
     @FXML
     public Button startBtn;
     private Game game;
     private MyScreenController myScreenController;
-    private int selectedRow;
-    private int selectedCol;
+    private int selectedRow, selectedCol;
     private PieceType selectedPiece;
 
     public static Image makeImg(String imgPath) {
@@ -116,15 +115,15 @@ public class GameController {
 
         startBtn.setOnMouseClicked(startBtnClick);
 
-        update();
+        updateBuyView();
     }
 
     public void switchTurn() {
         selectedPiece = null;
-        update();
+        updatePlayView();
     }
 
-    private void update() {
+    private void updatePlayView() {
         game.update();
         updateOwnedPiecesListView();
     }
@@ -133,6 +132,17 @@ public class GameController {
        ownedPiecesListView.getItems().clear();
         for (PieceType piece: game.getCurrentPlayer().getPiecesOwned()) {
             ownedPiecesListView.getItems().add(piece.getName());
+        }
+    }
+
+    private void updateBuyView() {
+        updatePiecesToBuyListView();
+    }
+
+    private void updatePiecesToBuyListView() {
+        piecesToBuyListView.getItems().clear();
+        for (PieceType piece : PieceType.values()) {
+            piecesToBuyListView.getItems().add(piece.getName());
         }
     }
 }

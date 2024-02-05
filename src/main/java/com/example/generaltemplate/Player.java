@@ -6,11 +6,14 @@ public class Player {
     private String name;
     private Colors color;
     private ArrayList<PieceType> piecesOwned;
+    private int money;
 
-    public Player(String name, Colors color) {
+    public Player(String name, Colors color, int money) {
         this.name = name;
         this.color = color;
+        this.money = money;
         piecesOwned = new ArrayList<>();
+
     }
 
     public String getName() {
