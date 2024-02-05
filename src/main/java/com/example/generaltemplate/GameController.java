@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
@@ -16,6 +17,8 @@ import java.io.FileNotFoundException;
 public class GameController {
     @FXML
     public GridPane board;
+    @FXML
+    public ListView<String> ownedPiecesListView;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow;
@@ -51,7 +54,7 @@ public class GameController {
 
             if (game.piecePlayable(selectedRow, selectedCol, movement)) {
                 game.playPiece(selectedRow, selectedCol, movement);
-                game.simulateTurn();
+                game.simulateTurn(this::update);
             }
         };
 
@@ -76,8 +79,15 @@ public class GameController {
         update();
     }
 
-
     private void update() {
         game.update();
+        updateOwnedPiecesListView();
+    }
+
+    private void updateOwnedPiecesListView() {
+       ownedPiecesListView.getItems().clear();
+        for (PieceType piece: game.getCurrentPlayer().getPiecesOwned()) {
+            ownedPiecesListView.getItems().add(piece.getName());
+        }
     }
 }

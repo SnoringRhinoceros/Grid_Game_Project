@@ -1,12 +1,11 @@
 package com.example.generaltemplate;
 
-public enum PieceType {
-
-    BASIC("basic piece");
+public enum Colors {
+    RED("red"), BLUE("blue");
 
     private final String name;
 
-    PieceType(String name) {
+    Colors(String name) {
         this.name = name;
     }
 

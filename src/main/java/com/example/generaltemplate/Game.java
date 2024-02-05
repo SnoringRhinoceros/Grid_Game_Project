@@ -10,11 +10,14 @@ public class Game {
 
     private final ArrayList<Player> players = new ArrayList<>();
     private int turnNum = 0;
+    private boolean turnOngoing = false;
 
     public Game() {
         grid = new Grid();
-        players.add(new Player("p1", "red"));
-        players.add(new Player("p2", "blue"));
+        players.add(new Player("p1", Colors.RED));
+        players.add(new Player("p2", Colors.BLUE));
+
+        players.get(0).getPiecesOwned().add(PieceType.BASIC);
     }
 
     public Grid getGrid() {
@@ -22,26 +25,20 @@ public class Game {
     }
 
     public boolean piecePlayable(int selectedRow, int selectedCol, Movement movement) {
-        for (int i = 0; i < grid.getCells().length; i++) {
-            for (int j = 0; j < grid.getCells()[i].length; j++) {
-                if (grid.getCells()[i][j].hasPiece() && !grid.getCells()[i][j].getPiece().getMovement().equals(Movement.STILL)) {
-                    return false;
-                }
-            }
-        }
-        return !grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece();
+        return !(grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece() || turnOngoing);
     }
 
     public void playPiece(int selectedRow, int selectedCol, Movement movement) {
-        if (getCurrentPlayer().getColor().equals("red")) {
-            grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.RED_BASIC, movement));
-        } else if (getCurrentPlayer().getColor().equals("blue")) {
-            grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BLUE_BASIC, movement));
+        for (Colors color: Colors.values()) {
+            if (getCurrentPlayer().getColor().equals(color)) {
+                grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(PieceType.BASIC, color, movement));
+            }
         }
         update();
     }
 
-    public void simulateTurn() {
+    public void simulateTurn(Runnable endFunc) {
+        turnOngoing = true;
         simulationStartTime = System.nanoTime();
         new AnimationTimer() {
             @Override
@@ -72,6 +69,8 @@ public class Game {
                         }
                     }
                     if (doneSimulating) {
+                        turnOngoing = false;
+                        endFunc.run();
                         stop();
                     }
                     update();
@@ -81,11 +80,15 @@ public class Game {
         }.start();
     }
 
-    private Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return players.get(turnNum % players.size());
     }
 
     public void update() {
         grid.update();
+    }
+
+    public boolean isTurnOngoing() {
+        return turnOngoing;
     }
 }
