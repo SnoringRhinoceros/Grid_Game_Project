@@ -21,15 +21,16 @@ public class Game {
 
         players.get(0).getPiecesOwned().add(PieceType.BASIC);
         players.get(0).getPiecesOwned().add(PieceType.BASIC);
-        players.get(0).getPiecesOwned().add(PieceType.BASIC);
-        players.get(0).getPiecesOwned().add(PieceType.BASIC);
         players.get(0).getPiecesOwned().add(PieceType.EXPLODER);
         players.get(0).getPiecesOwned().add(PieceType.CHANGER);
+        players.get(0).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
 
         players.get(1).getPiecesOwned().add(PieceType.BASIC);
         players.get(1).getPiecesOwned().add(PieceType.BASIC);
         players.get(1).getPiecesOwned().add(PieceType.BASIC);
-        players.get(1).getPiecesOwned().add(PieceType.BASIC);
+        players.get(1).getPiecesOwned().add(PieceType.EXPLODER);
+        players.get(1).getPiecesOwned().add(PieceType.CHANGER);
+        players.get(1).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
     }
 
     public Grid getGrid() {
@@ -82,6 +83,13 @@ public class Game {
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
                                                 grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
+                                            }
+                                            grid.getCells()[row][col].setPiece(null);
+                                        } else if (cell.getPiece().getPieceType().equals(PieceType.HORIZONTAL_SCORER)) {
+                                            for (Cell sCell : grid.getCells()[row]) {
+                                                if (sCell.hasPiece()) {
+                                                    sCell.getPiece().setColor(cell.getPiece().getColor());
+                                                }
                                             }
                                             grid.getCells()[row][col].setPiece(null);
                                         }
