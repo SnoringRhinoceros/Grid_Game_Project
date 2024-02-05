@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.FileInputStream;
@@ -20,6 +21,8 @@ public class GameController {
     public GridPane board;
     @FXML
     public ListView<String> ownedPiecesListView;
+    @FXML
+    public AnchorPane gameAnchorPane;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow;
@@ -90,10 +93,13 @@ public class GameController {
         myScreenController = new MyScreenController();
 
         MyScreen playView = new MyScreen("playView");
-        playView.addFXMLElement(board);
+        playView.addFXMLElement(gameAnchorPane);
         myScreenController.add(playView);
 
-        myScreenController.activate("playView");
+        MyScreen buyView = new MyScreen("buyView");
+        myScreenController.add(buyView);
+
+        myScreenController.activate("buyView");
 
         update();
     }
