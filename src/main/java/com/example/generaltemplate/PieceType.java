@@ -2,7 +2,7 @@ package com.example.generaltemplate;
 
 public enum PieceType {
 
-    BASIC("Basic"), EXPLODER("Exploder"), CHANGER("Changer"), HORIZONTAL_SCORER("Horizontal scorer");
+    BASIC("Basic"), EXPLODER("Exploder"), CHANGER("Changer"), HORIZONTAL_SCORER("Horizontal scorer"), SHIELD("Shield");
 
     private final String name;
 

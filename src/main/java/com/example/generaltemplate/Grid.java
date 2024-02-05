@@ -78,4 +78,17 @@ public class Grid {
         }
         return result;
     }
+
+    public ArrayList<int[]> getAllPieceLocsOfType(PieceType pieceType) {
+        ArrayList<int[]> result = new ArrayList<>();
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                if (pieceType.equals(cells[i][j].getPiece().getPieceType())) {
+                    int[] loc = {i, j};
+                    result.add(loc);
+                }
+            }
+        }
+        return result;
+    }
 }

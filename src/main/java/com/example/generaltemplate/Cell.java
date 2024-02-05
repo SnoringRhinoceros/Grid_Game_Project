@@ -3,6 +3,7 @@ package com.example.generaltemplate;
 public class Cell {
     private TerrainTypes terrainType;
     private Piece piece;
+    private boolean shielded;
 
     public Cell(TerrainTypes terrainType) {
         this.terrainType = terrainType;
@@ -26,5 +27,13 @@ public class Cell {
 
     public boolean hasPiece() {
         return piece != null;
+    }
+
+    public boolean isShielded() {
+        return shielded;
+    }
+
+    public void setShielded(boolean shielded) {
+        this.shielded = shielded;
     }
 }

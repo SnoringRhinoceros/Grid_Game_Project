@@ -3,6 +3,8 @@ package com.example.generaltemplate;
 import javafx.animation.AnimationTimer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Game {
     private final Grid grid;
@@ -13,6 +15,8 @@ public class Game {
     private boolean turnOngoing = false;
     private final int EXPLODER_RANGE = 3;
     private final int CHANGER_RANGE = 2;
+    private final int SHIELD_RANGE = 1;
+    private final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
 
     public Game() {
         grid = new Grid();
@@ -24,6 +28,7 @@ public class Game {
         players.get(0).getPiecesOwned().add(PieceType.EXPLODER);
         players.get(0).getPiecesOwned().add(PieceType.CHANGER);
         players.get(0).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
+        players.get(0).getPiecesOwned().add(PieceType.SHIELD);
 
         players.get(1).getPiecesOwned().add(PieceType.BASIC);
         players.get(1).getPiecesOwned().add(PieceType.BASIC);
@@ -31,6 +36,7 @@ public class Game {
         players.get(1).getPiecesOwned().add(PieceType.EXPLODER);
         players.get(1).getPiecesOwned().add(PieceType.CHANGER);
         players.get(1).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
+        players.get(1).getPiecesOwned().add(PieceType.SHIELD);
     }
 
     public Grid getGrid() {
@@ -74,25 +80,35 @@ public class Game {
                                         grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
                                         noPiecesMoved = false;
                                     } else if (!cell.getPiece().isAlreadyMoved()){
+                                        // piece logic is here
+
+                                        updateShieldedCells();
                                         cell.getPiece().setMovement(Movement.STILL);
                                         if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
-                                                grid.getCells()[loc[0]][loc[1]].setPiece(null);
+                                                if (!cell.isShielded()) {
+                                                    grid.getCells()[loc[0]][loc[1]].setPiece(null);
+                                                }
                                             }
                                             grid.getCells()[row][col].setPiece(null);
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
-                                                grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
+                                                if (!cell.isShielded()) {
+                                                    grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
+                                                }
                                             }
                                             grid.getCells()[row][col].setPiece(null);
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.HORIZONTAL_SCORER)) {
                                             for (Cell sCell : grid.getCells()[row]) {
                                                 if (sCell.hasPiece()) {
-                                                    sCell.getPiece().setColor(cell.getPiece().getColor());
+                                                    if (!cell.isShielded()) {
+                                                        sCell.getPiece().setColor(cell.getPiece().getColor());
+                                                    }
                                                 }
                                             }
                                             grid.getCells()[row][col].setPiece(null);
                                         }
+                                        updateShieldedCells();
                                     }
                                 }
                             }
@@ -110,6 +126,22 @@ public class Game {
             }
         }.start();
     }
+
+        public void updateShieldedCells() {
+            for (int i = 0; i < grid.getCells().length; i++) {
+                for (int j = 0; j < grid.getCells()[i].length; j++) {
+                    grid.getCells()[i][j].setShielded(false);
+                }
+            }
+
+            for (int[] shieldLoc : grid.getAllPieceLocsOfType(PieceType.SHIELD)) {
+                for (int[] pieceLoc : grid.getNearbyPieceLocs(shieldLoc[0], shieldLoc[1], 1)) {
+                    if (PROTECTED_PIECE_TYPES.contains(grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getPieceType())) {
+                        grid.getCells()[pieceLoc[0]][pieceLoc[1]].setShielded(true);
+                    }
+                }
+            }
+        }
 
     public Player getCurrentPlayer() {
         return players.get(turnNum % players.size());
