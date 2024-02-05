@@ -6,9 +6,10 @@ import static com.example.generaltemplate.GameController.makeImg;
 
 public class Piece {
     private final PieceType pieceType;
-    private final Colors color;
-    private final Image image;
+    private Colors color;
+    private Image image;
     private Movement movement;
+    private boolean alreadyMoved;
 
     public Piece(PieceType pieceType, Colors color, Movement movement) {
         this.pieceType = pieceType;
@@ -35,5 +36,18 @@ public class Piece {
 
     public Image getImage() {
         return image;
+    }
+
+    public void setColor(Colors color) {
+        this.color = color;
+        image = makeImg("src/main/resources/com/example/generaltemplate/img/" + this.color.getName() +"/"+ pieceType.getName().toLowerCase() + " piece.png");
+    }
+
+    public boolean isAlreadyMoved() {
+        return alreadyMoved;
+    }
+
+    public void setAlreadyMoved(boolean alreadyMoved) {
+        this.alreadyMoved = alreadyMoved;
     }
 }
