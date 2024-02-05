@@ -86,7 +86,7 @@ public class Game {
                                         cell.getPiece().setMovement(Movement.STILL);
                                         if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
-                                                if (!cell.isShielded()) {
+                                                if (!grid.getCells()[loc[0]][loc[1]].isShielded()) {
                                                     grid.getCells()[loc[0]][loc[1]].setPiece(null);
                                                 }
                                             }
@@ -135,8 +135,8 @@ public class Game {
             }
 
             for (int[] shieldLoc : grid.getAllPieceLocsOfType(PieceType.SHIELD)) {
-                for (int[] pieceLoc : grid.getNearbyPieceLocs(shieldLoc[0], shieldLoc[1], 1)) {
-                    if (PROTECTED_PIECE_TYPES.contains(grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getPieceType())) {
+                for (int[] pieceLoc : grid.getNearbyPieceLocs(shieldLoc[0], shieldLoc[1], SHIELD_RANGE)) {
+                    if (grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getColor().equals(grid.getCells()[shieldLoc[0]][shieldLoc[1]].getPiece().getColor()) && PROTECTED_PIECE_TYPES.contains(grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getPieceType())) {
                         grid.getCells()[pieceLoc[0]][pieceLoc[1]].setShielded(true);
                     }
                 }

@@ -83,7 +83,7 @@ public class Grid {
         ArrayList<int[]> result = new ArrayList<>();
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                if (cells[j][j].hasPiece()) {
+                if (cells[i][j].hasPiece()) {
                     if (pieceType.equals(cells[i][j].getPiece().getPieceType())) {
                         int[] loc = {i, j};
                         result.add(loc);
