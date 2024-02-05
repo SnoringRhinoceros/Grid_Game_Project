@@ -18,6 +18,14 @@ public class Game {
         players.add(new Player("p2", Colors.BLUE));
 
         players.get(0).getPiecesOwned().add(PieceType.BASIC);
+        players.get(0).getPiecesOwned().add(PieceType.BASIC);
+        players.get(0).getPiecesOwned().add(PieceType.BASIC);
+        players.get(0).getPiecesOwned().add(PieceType.BASIC);
+        players.get(0).getPiecesOwned().add(PieceType.EXPLODER);
+
+        players.get(1).getPiecesOwned().add(PieceType.BASIC);
+        players.get(1).getPiecesOwned().add(PieceType.BASIC);
+        players.get(1).getPiecesOwned().add(PieceType.BASIC);
         players.get(1).getPiecesOwned().add(PieceType.BASIC);
     }
 
@@ -56,6 +64,12 @@ public class Game {
                                         break;
                                     } else {
                                         cell.getPiece().setMovement(Movement.STILL);
+                                        if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
+                                            for (int[] loc: grid.getNearbyPieceLocs(row, col, 2)) {
+                                                grid.getCells()[loc[0]][loc[1]].setPiece(null);
+                                            }
+                                            grid.getCells()[row][col].setPiece(null);
+                                        }
                                         turnNum++;
                                     }
                                     doneSimulating = false;
@@ -84,9 +98,5 @@ public class Game {
 
     public void update() {
         grid.update();
-    }
-
-    public boolean isTurnOngoing() {
-        return turnOngoing;
     }
 }

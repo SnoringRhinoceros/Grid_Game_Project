@@ -2,7 +2,7 @@ package com.example.generaltemplate;
 
 public enum PieceType {
 
-    BASIC("basic piece");
+    BASIC("Basic"), EXPLODER("Exploder");
 
     private final String name;
 

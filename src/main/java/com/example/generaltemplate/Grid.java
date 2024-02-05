@@ -4,6 +4,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 import static com.example.generaltemplate.GameController.makeImg;
 
 public class Grid {
@@ -60,5 +62,20 @@ public class Grid {
 
     public Button[][] getButtons() {
         return buttons;
+    }
+
+    public ArrayList<int[]> getNearbyPieceLocs(int row, int col, int range) {
+        ArrayList<int[]> result = new ArrayList<>();
+        for (int i = Math.max(row-range, 0) ; i < Math.min(row+range+1, cells.length); i++) {
+            for (int j = Math.max(col-range, 0); j < Math.min(col+range+1, cells[i].length); j++) {
+                if (!(i == row && j == col)) {
+                    if (cells[i][j].hasPiece()) {
+                        int[] loc = {i, j};
+                        result.add(loc);
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
