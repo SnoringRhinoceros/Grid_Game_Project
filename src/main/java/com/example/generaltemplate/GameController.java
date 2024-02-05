@@ -22,7 +22,9 @@ public class GameController {
     @FXML
     public ListView<String> ownedPiecesListView;
     @FXML
-    public AnchorPane gameAnchorPane;
+    public AnchorPane gameAnchorPane, buyAnchorPane;
+    @FXML
+    public Button startBtn;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow;
@@ -55,6 +57,8 @@ public class GameController {
 
         ownedPiecesListView.setOnMouseClicked(handleOwnedPiecesListViewClick);
 
+
+
         EventHandler<ActionEvent> handleBoardClick = event -> {
 
             selectedRow = GridPane.getRowIndex((Button) event.getSource());
@@ -80,6 +84,8 @@ public class GameController {
             }
         };
 
+
+
         game = new Game();
         for (int i = 0; i < game.getGrid().getButtons().length; i++) {
             for (int j = 0; j < game.getGrid().getButtons()[i].length; j++) {
@@ -90,6 +96,8 @@ public class GameController {
         board.setAlignment(Pos.CENTER);
         board.setGridLinesVisible(true);
 
+
+
         myScreenController = new MyScreenController();
 
         MyScreen playView = new MyScreen("playView");
@@ -97,9 +105,16 @@ public class GameController {
         myScreenController.add(playView);
 
         MyScreen buyView = new MyScreen("buyView");
+        buyView.addFXMLElement(buyAnchorPane);
         myScreenController.add(buyView);
 
         myScreenController.activate("buyView");
+
+        EventHandler<MouseEvent> startBtnClick = mouseEvent -> {
+            myScreenController.activate(playView.getName());
+        };
+
+        startBtn.setOnMouseClicked(startBtnClick);
 
         update();
     }
