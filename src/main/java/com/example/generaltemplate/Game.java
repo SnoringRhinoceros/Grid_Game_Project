@@ -33,8 +33,8 @@ public class Game {
         return grid;
     }
 
-    public boolean piecePlayable(int selectedRow, int selectedCol, Movement movement) {
-        return !(grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece() || turnOngoing);
+    public boolean normalPiecePlayable(int selectedRow, int selectedCol, Movement movement) {
+        return !grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece();
     }
 
     public void playPiece(Player player, PieceType pieceType, int selectedRow, int selectedCol, Movement movement) {
@@ -98,5 +98,9 @@ public class Game {
 
     public void update() {
         grid.update();
+    }
+
+    public boolean isTurnOngoing() {
+        return turnOngoing;
     }
 }

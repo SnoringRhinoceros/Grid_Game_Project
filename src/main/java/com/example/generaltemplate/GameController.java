@@ -70,7 +70,7 @@ public class GameController {
                     movement = Movement.LEFT;
                 }
 
-                if (game.piecePlayable(selectedRow, selectedCol, movement)) {
+                if (!game.isTurnOngoing() && (game.normalPiecePlayable(selectedRow, selectedCol, movement) || selectedPiece.equals(PieceType.EXPLODER))) {
                     game.playPiece(game.getCurrentPlayer(), selectedPiece, selectedRow, selectedCol, movement);
                     game.simulateTurn(this::switchTurn);
                 }
