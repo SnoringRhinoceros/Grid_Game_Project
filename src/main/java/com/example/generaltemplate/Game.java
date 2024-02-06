@@ -13,6 +13,8 @@ public class Game {
     private final ArrayList<Player> players = new ArrayList<>();
     private int turnNum = 0;
     private boolean turnOngoing = false;
+    private int currentBuyer;
+
 
     // constants ↓
     private final int EXPLODER_RANGE = 3;
@@ -156,5 +158,14 @@ public class Game {
 
     public boolean isTurnOngoing() {
         return turnOngoing;
+    }
+
+    public boolean incrementCurrentBuyer() {
+        currentBuyer++;
+        return  currentBuyer >= players.size();
+    }
+
+    public Player getCurrentBuyer() {
+        return players.get(currentBuyer);
     }
 }

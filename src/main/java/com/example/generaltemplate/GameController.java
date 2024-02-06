@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +26,8 @@ public class GameController {
     public AnchorPane gameAnchorPane, buyAnchorPane;
     @FXML
     public Button startBtn;
+    @FXML
+    public Label moneyLbl;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow, selectedCol;
@@ -128,6 +131,11 @@ public class GameController {
         updateOwnedPiecesListView();
     }
 
+    private void updateBuyView() {
+        updatePiecesToBuyListView();
+        updateMoneyLbl();
+    }
+
     private void updateOwnedPiecesListView() {
        ownedPiecesListView.getItems().clear();
         for (PieceType piece: game.getCurrentPlayer().getPiecesOwned()) {
@@ -135,14 +143,14 @@ public class GameController {
         }
     }
 
-    private void updateBuyView() {
-        updatePiecesToBuyListView();
-    }
-
     private void updatePiecesToBuyListView() {
         piecesToBuyListView.getItems().clear();
         for (PieceType piece : PieceType.values()) {
             piecesToBuyListView.getItems().add(piece.getName());
         }
+    }
+
+    private void updateMoneyLbl() {
+        moneyLbl.setText("Money: " + game.getCurrentBuyer().getMoney());
     }
 }

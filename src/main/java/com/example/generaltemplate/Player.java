@@ -20,6 +20,10 @@ public class Player {
         return name;
     }
 
+    public int getMoney() {
+        return money;
+    }
+
     public Colors getColor() {
         return color;
     }

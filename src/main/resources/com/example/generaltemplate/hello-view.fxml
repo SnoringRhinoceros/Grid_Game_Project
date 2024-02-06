@@ -7,19 +7,13 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
     <children>
       <AnchorPane fx:id="gameAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
-            <ListView fx:id="ownedPiecesListView" layoutX="14.0" layoutY="163.0" prefHeight="261.0" prefWidth="158.0" />
             <GridPane fx:id="board" layoutX="225.0" layoutY="100.0">
 
       </GridPane>
-            <Label layoutX="32.0" layoutY="135.0" text="Owned Pieces">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="buyAnchorPane" prefHeight="600.0" prefWidth="800.0">
@@ -33,6 +27,22 @@
             <Label layoutX="208.0" layoutY="77.0" text="Choose Piece to Buy">
                <font>
                   <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="moneyLbl" layoutX="566.0" layoutY="112.0" text="Money: ">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="431.0" layoutY="310.0" mnemonicParsing="false" text="Buy Piece" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="ownedPiecesAnchorPane" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <ListView fx:id="ownedPiecesListView" layoutX="14.0" layoutY="127.0" prefHeight="261.0" prefWidth="158.0" />
+            <Label layoutX="31.0" layoutY="97.0" text="Owned Pieces">
+               <font>
+                  <Font size="20.0" />
                </font>
             </Label>
          </children>
