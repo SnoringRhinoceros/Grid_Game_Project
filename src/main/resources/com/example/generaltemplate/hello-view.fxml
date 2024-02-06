@@ -9,16 +9,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
     <children>
-      <AnchorPane fx:id="ownedPiecesAnchorPane" prefHeight="600.0" prefWidth="800.0">
-         <children>
-            <ListView fx:id="ownedPiecesListView" layoutX="14.0" layoutY="127.0" prefHeight="261.0" prefWidth="158.0" />
-            <Label layoutX="31.0" layoutY="97.0" text="Owned Pieces">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="gameAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
             <GridPane fx:id="board" layoutX="225.0" layoutY="100.0">
@@ -45,6 +35,16 @@
                </font>
             </Label>
             <Button fx:id="buyPieceBtn" layoutX="431.0" layoutY="310.0" mnemonicParsing="false" text="Buy Piece" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="ownedPiecesAnchorPane" layoutY="-3.0" prefHeight="391.0" prefWidth="179.0">
+         <children>
+            <ListView fx:id="ownedPiecesListView" layoutX="14.0" layoutY="127.0" prefHeight="261.0" prefWidth="158.0" />
+            <Label layoutX="31.0" layoutY="97.0" text="Owned Pieces">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
     </children>
