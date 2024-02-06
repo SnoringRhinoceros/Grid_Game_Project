@@ -31,4 +31,8 @@ public class Player {
     public ArrayList<PieceType> getPiecesOwned() {
         return piecesOwned;
     }
+
+    public void addMoney(int money) {
+        this.money += money;
+    }
 }

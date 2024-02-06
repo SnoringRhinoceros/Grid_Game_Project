@@ -23,9 +23,9 @@ public class GameController {
     @FXML
     public ListView<String> ownedPiecesListView, piecesToBuyListView;
     @FXML
-    public AnchorPane gameAnchorPane, buyAnchorPane;
+    public AnchorPane gameAnchorPane, buyAnchorPane, ownedPiecesAnchorPane;
     @FXML
-    public Button startBtn;
+    public Button startBtn, buyPieceBtn;
     @FXML
     public Label moneyLbl;
     private Game game;
@@ -44,21 +44,15 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        EventHandler<MouseEvent> handleOwnedPiecesListViewClick = event -> {
-            String selectedName = ownedPiecesListView.getSelectionModel().getSelectedItem();
-            if (selectedName != null) {
-                for (PieceType pieceType: PieceType.values()) {
-                    if (pieceType.getName().equals(selectedName)) {
-                        selectedPiece = pieceType;
-                    }
-                }
-            } else {
-                selectedPiece = null;
-            }
+        setEventHandlerForSelectedPieceListViews(piecesToBuyListView);
+        setEventHandlerForSelectedPieceListViews(ownedPiecesListView);
+
+        EventHandler<MouseEvent> handleBuyPieceBtnClick = event -> {
+            game.getCurrentBuyer().addMoney(-selectedPiece.getPrice());
+            game.getCurrentBuyer().getPiecesOwned().add(selectedPiece);
+            updateBuyView();
         };
-
-        ownedPiecesListView.setOnMouseClicked(handleOwnedPiecesListViewClick);
-
+        buyPieceBtn.setOnMouseClicked(handleBuyPieceBtnClick);
 
 
         EventHandler<ActionEvent> handleBoardClick = event -> {
@@ -104,10 +98,12 @@ public class GameController {
 
         MyScreen playView = new MyScreen("playView");
         playView.addFXMLElement(gameAnchorPane);
+        playView.addFXMLElement(ownedPiecesAnchorPane);
         myScreenController.add(playView);
 
         MyScreen buyView = new MyScreen("buyView");
         buyView.addFXMLElement(buyAnchorPane);
+        buyView.addFXMLElement(ownedPiecesAnchorPane);
         myScreenController.add(buyView);
 
         myScreenController.activate("buyView");
@@ -119,6 +115,22 @@ public class GameController {
         startBtn.setOnMouseClicked(startBtnClick);
 
         updateBuyView();
+    }
+
+    private void setEventHandlerForSelectedPieceListViews(ListView<String> piecesToBuyListView) {
+        EventHandler<MouseEvent> handlePiecesToBuyListViewClick = event -> {
+            String selectedName = piecesToBuyListView.getSelectionModel().getSelectedItem();
+            if (selectedName != null) {
+                for (PieceType pieceType: PieceType.values()) {
+                    if (pieceType.getName().equals(selectedName)) {
+                        selectedPiece = pieceType;
+                    }
+                }
+            } else {
+                selectedPiece = null;
+            }
+        };
+        piecesToBuyListView.setOnMouseClicked(handlePiecesToBuyListViewClick);
     }
 
     public void switchTurn() {
@@ -134,6 +146,7 @@ public class GameController {
     private void updateBuyView() {
         updatePiecesToBuyListView();
         updateMoneyLbl();
+        updateOwnedPiecesListView();
     }
 
     private void updateOwnedPiecesListView() {
