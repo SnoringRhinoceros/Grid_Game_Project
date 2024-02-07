@@ -149,6 +149,7 @@ public class GameController {
 
         EventHandler<MouseEvent> startBtnClick = mouseEvent -> {
             myScreenController.activate("playView");
+            updatePlayView();
         };
 
         startBtn.setOnMouseClicked(startBtnClick);
