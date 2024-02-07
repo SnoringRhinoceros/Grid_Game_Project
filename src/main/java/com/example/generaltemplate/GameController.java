@@ -31,7 +31,7 @@ public class GameController {
     @FXML
     public Label moneyLbl, buyViewPlayerNameLbl;
     @FXML
-    public TextArea buyPieceDescriptionTextArea;
+    public TextArea buyPieceDescriptionTextArea, playPieceDescriptionTextArea;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow, selectedCol;
@@ -52,6 +52,8 @@ public class GameController {
         startBtn.setVisible(false);
         buyPieceDescriptionTextArea.setEditable(false);
         buyPieceDescriptionTextArea.setWrapText(true);
+        playPieceDescriptionTextArea.setEditable(false);
+        playPieceDescriptionTextArea.setWrapText(true);
 
         EventHandler<MouseEvent> handleNextPlayerBuyBtnClick = event -> {
             if (!game.incrementCurrentBuyer()) {
@@ -71,6 +73,8 @@ public class GameController {
                         selectedListView = (ListView<String>) event.getSource();
                         if (event.getSource().equals(piecesToBuyListView)) {
                             updateBuyViewPlayerStuff(game.getCurrentBuyer());
+                        } else if (event.getSource().equals(ownedPiecesListView) && myScreenController.getCurrentScreen().getName().equals("playView")) {
+                            updatePlayView();
                         }
                     }
                 }
@@ -148,6 +152,7 @@ public class GameController {
         myScreenController.activate("buyView");
 
         EventHandler<MouseEvent> startBtnClick = mouseEvent -> {
+            selectedPiece = null;
             myScreenController.activate("playView");
             updatePlayView();
         };
@@ -165,6 +170,13 @@ public class GameController {
     private void updatePlayView() {
         game.update();
         updateOwnedPiecesListView(game.getCurrentPlayer());
+        updatePlayPieceDescriptionTextArea();
+    }
+
+    private void updatePlayPieceDescriptionTextArea() {
+        if (selectedPiece != null) {
+            playPieceDescriptionTextArea.setText(selectedPiece.getName() + ":\n" + selectedPiece.getDescription());
+        }
     }
 
     private void updateBuyView(Player player) {
@@ -187,10 +199,15 @@ public class GameController {
     }
 
     private void updateOwnedPiecesListView(Player player) {
-       ownedPiecesListView.getItems().clear();
+        int selectedItem = 0;
+        if (!ownedPiecesListView.getSelectionModel().getSelectedIndices().isEmpty()) {
+            selectedItem = ownedPiecesListView.getSelectionModel().getSelectedIndices().get(ownedPiecesListView.getSelectionModel().getSelectedIndices().size()-1);
+        }
+        ownedPiecesListView.getItems().clear();
         for (PieceType piece: player.getPiecesOwned()) {
             ownedPiecesListView.getItems().add(piece.getName());
         }
+        ownedPiecesListView.getSelectionModel().select(selectedItem);
     }
 
     private void updatePiecesToBuyListView() {
