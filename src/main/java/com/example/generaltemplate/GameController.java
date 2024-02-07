@@ -64,6 +64,9 @@ public class GameController {
                     if (pieceType.getName().equals(selectedName)) {
                         selectedPiece = pieceType;
                         selectedListView = (ListView<String>) event.getSource();
+                        if (event.getSource().equals(piecesToBuyListView)) {
+                            updateBuyViewPlayerStuff(game.getCurrentBuyer());
+                        }
                     }
                 }
             } else {
@@ -73,11 +76,6 @@ public class GameController {
 
         piecesToBuyListView.setOnMouseClicked(handleSelectedPieceListViewClick);
         ownedPiecesListView.setOnMouseClicked(handleSelectedPieceListViewClick);
-
-        EventHandler<MouseEvent> handlePiecesToBuyListViewClick = event -> {
-            updateBuyView(game.getCurrentBuyer());
-        };
-        piecesToBuyListView.setOnMouseClicked(handlePiecesToBuyListViewClick);
 
 
         EventHandler<MouseEvent> handleBuyPieceBtnClick = event -> {
@@ -165,9 +163,13 @@ public class GameController {
 
     private void updateBuyView(Player player) {
         updatePiecesToBuyListView();
+        updateBuyViewPlayerStuff(player);
+        updateBuyViewPlayerNameLbl();
+    }
+
+    private void updateBuyViewPlayerStuff(Player player) {
         updateMoneyLbl();
         updateOwnedPiecesListView(player);
-        updateBuyViewPlayerNameLbl();
     }
 
     private void updateOwnedPiecesListView(Player player) {
