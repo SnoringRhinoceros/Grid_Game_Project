@@ -25,9 +25,9 @@ public class GameController {
     @FXML
     public AnchorPane gameAnchorPane, buyAnchorPane, ownedPiecesAnchorPane;
     @FXML
-    public Button startBtn, buyPieceBtn;
+    public Button startBtn, buyPieceBtn, nextPlayerBuyBtn;
     @FXML
-    public Label moneyLbl;
+    public Label moneyLbl, buyViewPlayerNameLbl;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow, selectedCol;
@@ -45,6 +45,17 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        startBtn.setVisible(false);
+
+        EventHandler<MouseEvent> handleNextPlayerBuyBtnClick = event -> {
+            if (!game.incrementCurrentBuyer()) {
+                startBtn.setVisible(true);
+                nextPlayerBuyBtn.setVisible(false);
+            }
+            updateBuyView(game.getCurrentBuyer());
+        };
+        nextPlayerBuyBtn.setOnMouseClicked(handleNextPlayerBuyBtnClick);
+
         EventHandler<MouseEvent> handleSelectedPieceListViewClick = event -> {
             String selectedName = ((ListView<String>) event.getSource()).getSelectionModel().getSelectedItem();
             if (selectedName != null) {
@@ -66,7 +77,7 @@ public class GameController {
             if (selectedPiece != null && selectedListView.equals(piecesToBuyListView)) {
                 game.getCurrentBuyer().addMoney(-selectedPiece.getPrice());
                 game.getCurrentBuyer().getPiecesOwned().add(selectedPiece);
-                updateBuyView();
+                updateBuyView(game.getCurrentBuyer());
             }
         };
         buyPieceBtn.setOnMouseClicked(handleBuyPieceBtnClick);
@@ -132,7 +143,7 @@ public class GameController {
 
         startBtn.setOnMouseClicked(startBtnClick);
 
-        updateBuyView();
+        updateBuyView(game.getCurrentBuyer());
     }
 
     public void switchTurn() {
@@ -142,18 +153,19 @@ public class GameController {
 
     private void updatePlayView() {
         game.update();
-        updateOwnedPiecesListView();
+        updateOwnedPiecesListView(game.getCurrentPlayer());
     }
 
-    private void updateBuyView() {
+    private void updateBuyView(Player player) {
         updatePiecesToBuyListView();
         updateMoneyLbl();
-        updateOwnedPiecesListView();
+        updateOwnedPiecesListView(player);
+        updateBuyViewPlayerNameLbl();
     }
 
-    private void updateOwnedPiecesListView() {
+    private void updateOwnedPiecesListView(Player player) {
        ownedPiecesListView.getItems().clear();
-        for (PieceType piece: game.getCurrentPlayer().getPiecesOwned()) {
+        for (PieceType piece: player.getPiecesOwned()) {
             ownedPiecesListView.getItems().add(piece.getName());
         }
     }
@@ -168,4 +180,6 @@ public class GameController {
     private void updateMoneyLbl() {
         moneyLbl.setText("Money: " + game.getCurrentBuyer().getMoney());
     }
+
+    private void updateBuyViewPlayerNameLbl() {buyViewPlayerNameLbl.setText(game.getCurrentBuyer().getName() + " buy stuff");}
 }
