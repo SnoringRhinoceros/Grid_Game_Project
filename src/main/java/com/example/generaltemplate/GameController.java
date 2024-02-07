@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -29,6 +30,8 @@ public class GameController {
     public Button startBtn, buyPieceBtn, nextPlayerBuyBtn;
     @FXML
     public Label moneyLbl, buyViewPlayerNameLbl;
+    @FXML
+    public TextArea buyPieceDescriptionTextArea;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow, selectedCol;
@@ -47,6 +50,8 @@ public class GameController {
     @FXML
     public void initialize() {
         startBtn.setVisible(false);
+        buyPieceDescriptionTextArea.setEditable(false);
+        buyPieceDescriptionTextArea.setWrapText(true);
 
         EventHandler<MouseEvent> handleNextPlayerBuyBtnClick = event -> {
             if (!game.incrementCurrentBuyer()) {
@@ -170,6 +175,14 @@ public class GameController {
     private void updateBuyViewPlayerStuff(Player player) {
         updateMoneyLbl();
         updateOwnedPiecesListView(player);
+        updateBuyPieceDescriptionTextArea();
+    }
+
+    private void updateBuyPieceDescriptionTextArea() {
+        buyPieceDescriptionTextArea.clear();
+        if (selectedPiece != null) {
+            buyPieceDescriptionTextArea.setText(selectedPiece.getName() + "\n\nPrice: " + selectedPiece.getPrice() + "\n" + selectedPiece.getDescription());
+        }
     }
 
     private void updateOwnedPiecesListView(Player player) {
