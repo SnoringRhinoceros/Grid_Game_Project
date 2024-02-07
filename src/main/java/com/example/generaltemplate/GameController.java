@@ -2,6 +2,7 @@ package com.example.generaltemplate;
 
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -72,6 +73,12 @@ public class GameController {
 
         piecesToBuyListView.setOnMouseClicked(handleSelectedPieceListViewClick);
         ownedPiecesListView.setOnMouseClicked(handleSelectedPieceListViewClick);
+
+        EventHandler<MouseEvent> handlePiecesToBuyListViewClick = event -> {
+            updateBuyView(game.getCurrentBuyer());
+        };
+        piecesToBuyListView.setOnMouseClicked(handlePiecesToBuyListViewClick);
+
 
         EventHandler<MouseEvent> handleBuyPieceBtnClick = event -> {
             if (selectedPiece != null && selectedListView.equals(piecesToBuyListView)) {
