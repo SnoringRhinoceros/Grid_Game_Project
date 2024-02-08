@@ -26,21 +26,6 @@ public class Game {
         grid = new Grid();
         players.add(new Player("p1", Colors.RED, STARTING_MONEY));
         players.add(new Player("p2", Colors.BLUE, STARTING_MONEY));
-
-        players.get(0).getPiecesOwned().add(PieceType.BASIC);
-//        players.get(0).getPiecesOwned().add(PieceType.BASIC);
-//        players.get(0).getPiecesOwned().add(PieceType.EXPLODER);
-//        players.get(0).getPiecesOwned().add(PieceType.CHANGER);
-//        players.get(0).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
-//        players.get(0).getPiecesOwned().add(PieceType.SHIELD);
-//
-//        players.get(1).getPiecesOwned().add(PieceType.BASIC);
-//        players.get(1).getPiecesOwned().add(PieceType.BASIC);
-//        players.get(1).getPiecesOwned().add(PieceType.BASIC);
-//        players.get(1).getPiecesOwned().add(PieceType.EXPLODER);
-//        players.get(1).getPiecesOwned().add(PieceType.CHANGER);
-//        players.get(1).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
-//        players.get(1).getPiecesOwned().add(PieceType.SHIELD);
     }
 
     public Grid getGrid() {
@@ -88,25 +73,25 @@ public class Game {
                             Cell cell = grid.getCells()[row][col];
                             if (cell.hasPiece()) {
                                 if (cell.getPiece().getMovement() != Movement.STILL) {
-                                    if (!cell.getPiece().isAlreadyMoved() && grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
+                                    if (cell.getPiece().isNotAlreadyMoved() && grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
                                         cell.getPiece().setAlreadyMoved(true);
                                         grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
                                         noPiecesMoved = false;
-                                    } else if (!cell.getPiece().isAlreadyMoved()){
+                                    } else if (cell.getPiece().isNotAlreadyMoved()){
                                         // piece logic is here
 
                                         updateShieldedCells();
                                         cell.getPiece().setMovement(Movement.STILL);
                                         if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
-                                                if (!grid.getCells()[loc[0]][loc[1]].isShielded()) {
+                                                if (grid.getCells()[loc[0]][loc[1]].isNotShielded()) {
                                                     grid.getCells()[loc[0]][loc[1]].setPiece(null);
                                                 }
                                             }
                                             grid.getCells()[row][col].setPiece(null);
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
-                                                if (!cell.isShielded()) {
+                                                if (cell.isNotShielded()) {
                                                     grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
                                                 }
                                             }
@@ -114,7 +99,7 @@ public class Game {
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.HORIZONTAL_SCORER)) {
                                             for (Cell sCell : grid.getCells()[row]) {
                                                 if (sCell.hasPiece()) {
-                                                    if (!cell.isShielded()) {
+                                                    if (cell.isNotShielded()) {
                                                         sCell.getPiece().setColor(cell.getPiece().getColor());
                                                     }
                                                 }
@@ -178,7 +163,7 @@ public class Game {
     }
 
     public boolean isOver() {
-        return getCurrentPlayer().getPiecesOwned().size() == 0 || turnNum+1 > MAX_TURN_NUMS;
+        return getCurrentPlayer().getPiecesOwned().isEmpty() || turnNum+1 > MAX_TURN_NUMS;
     }
 
     public Player findWinner() {

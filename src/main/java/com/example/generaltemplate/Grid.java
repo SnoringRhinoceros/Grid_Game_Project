@@ -11,8 +11,8 @@ import static com.example.generaltemplate.GameController.makeImg;
 public class Grid {
     private final int GRID_SIZE = 20;
     private final int BUTTON_SIZE = 20;
-    private Cell[][] cells;
-    private Button[][] buttons;
+    private final Cell[][] cells;
+    private final Button[][] buttons;
     private final Image BLANK_CELL_IMG = makeImg("src/main/resources/com/example/generaltemplate/img/background.png");
 
     public Grid() {

@@ -3,7 +3,7 @@ package com.example.generaltemplate;
 public enum TerrainTypes {
     NONE("");
 
-    private String CSS;
+    private final String CSS;
     TerrainTypes(String CS) {
         this.CSS = CS;
     }

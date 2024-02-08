@@ -29,8 +29,8 @@ public class Cell {
         return piece != null;
     }
 
-    public boolean isShielded() {
-        return shielded;
+    public boolean isNotShielded() {
+        return !shielded;
     }
 
     public void setShielded(boolean shielded) {

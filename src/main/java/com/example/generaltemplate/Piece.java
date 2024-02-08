@@ -43,8 +43,8 @@ public class Piece {
         image = makeImg("src/main/resources/com/example/generaltemplate/img/" + this.color.getName() +"/"+ pieceType.getName().toLowerCase() + " piece.png");
     }
 
-    public boolean isAlreadyMoved() {
-        return alreadyMoved;
+    public boolean isNotAlreadyMoved() {
+        return !alreadyMoved;
     }
 
     public void setAlreadyMoved(boolean alreadyMoved) {

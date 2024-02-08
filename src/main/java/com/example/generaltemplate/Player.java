@@ -3,9 +3,9 @@ package com.example.generaltemplate;
 import java.util.ArrayList;
 
 public class Player {
-    private String name;
-    private Colors color;
-    private ArrayList<PieceType> piecesOwned;
+    private final String name;
+    private final Colors color;
+    private final ArrayList<PieceType> piecesOwned;
     private int money;
 
     public Player(String name, Colors color, int money) {
