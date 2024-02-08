@@ -29,7 +29,7 @@ public class GameController {
     @FXML
     public Button startBtn, buyPieceBtn, nextPlayerBuyBtn;
     @FXML
-    public Label moneyLbl, buyViewPlayerNameLbl;
+    public Label moneyLbl, buyViewPlayerNameLbl, playViewPlayerNameLbl;
     @FXML
     public TextArea buyPieceDescriptionTextArea, playPieceDescriptionTextArea;
     private Game game;
@@ -172,6 +172,11 @@ public class GameController {
         game.update();
         updateOwnedPiecesListView(game.getCurrentPlayer());
         updatePlayPieceDescriptionTextArea();
+        updatePlayViewPlayerNameLbl();
+    }
+
+    private void updatePlayViewPlayerNameLbl() {
+        playViewPlayerNameLbl.setText(game.getCurrentPlayer().getName() + "'s turn");
     }
 
     private void updatePlayPieceDescriptionTextArea() {

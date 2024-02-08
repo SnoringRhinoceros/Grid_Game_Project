@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
     <children>
       <AnchorPane fx:id="gameAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
@@ -19,6 +19,11 @@
             <Label layoutX="43.0" layoutY="356.0" text="Description">
                <font>
                   <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="playViewPlayerNameLbl" layoutX="325.0" layoutY="25.0" text="Playing Name">
+               <font>
+                  <Font size="38.0" />
                </font>
             </Label>
          </children>
@@ -42,7 +47,7 @@
                </font>
             </Label>
             <Button fx:id="buyPieceBtn" layoutX="465.0" layoutY="350.0" mnemonicParsing="false" text="Buy Piece" />
-            <Label fx:id="buyViewPlayerNameLbl" layoutX="352.0" layoutY="28.0" text="Player Name">
+            <Label fx:id="buyViewPlayerNameLbl" layoutX="352.0" layoutY="28.0" text="Buyer Name">
                <font>
                   <Font size="33.0" />
                </font>
