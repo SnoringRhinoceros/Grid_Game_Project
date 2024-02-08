@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
@@ -73,6 +74,11 @@
                   <Font size="20.0" />
                </font>
             </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="endScreenAnchorPane" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <ImageView fx:id="endScreenImageView" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
     </children>

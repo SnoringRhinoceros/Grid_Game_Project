@@ -2,9 +2,7 @@ package com.example.generaltemplate;
 
 import javafx.animation.AnimationTimer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private final Grid grid;
@@ -29,19 +27,19 @@ public class Game {
         players.add(new Player("p2", Colors.BLUE, STARTING_MONEY));
 
         players.get(0).getPiecesOwned().add(PieceType.BASIC);
-        players.get(0).getPiecesOwned().add(PieceType.BASIC);
-        players.get(0).getPiecesOwned().add(PieceType.EXPLODER);
-        players.get(0).getPiecesOwned().add(PieceType.CHANGER);
-        players.get(0).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
-        players.get(0).getPiecesOwned().add(PieceType.SHIELD);
-
-        players.get(1).getPiecesOwned().add(PieceType.BASIC);
-        players.get(1).getPiecesOwned().add(PieceType.BASIC);
-        players.get(1).getPiecesOwned().add(PieceType.BASIC);
-        players.get(1).getPiecesOwned().add(PieceType.EXPLODER);
-        players.get(1).getPiecesOwned().add(PieceType.CHANGER);
-        players.get(1).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
-        players.get(1).getPiecesOwned().add(PieceType.SHIELD);
+//        players.get(0).getPiecesOwned().add(PieceType.BASIC);
+//        players.get(0).getPiecesOwned().add(PieceType.EXPLODER);
+//        players.get(0).getPiecesOwned().add(PieceType.CHANGER);
+//        players.get(0).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
+//        players.get(0).getPiecesOwned().add(PieceType.SHIELD);
+//
+//        players.get(1).getPiecesOwned().add(PieceType.BASIC);
+//        players.get(1).getPiecesOwned().add(PieceType.BASIC);
+//        players.get(1).getPiecesOwned().add(PieceType.BASIC);
+//        players.get(1).getPiecesOwned().add(PieceType.EXPLODER);
+//        players.get(1).getPiecesOwned().add(PieceType.CHANGER);
+//        players.get(1).getPiecesOwned().add(PieceType.HORIZONTAL_SCORER);
+//        players.get(1).getPiecesOwned().add(PieceType.SHIELD);
     }
 
     public Grid getGrid() {
@@ -176,5 +174,38 @@ public class Game {
 
     public Player getCurrentBuyer() {
         return players.get(currentBuyer);
+    }
+
+    public boolean isOver() {
+        return getCurrentPlayer().getPiecesOwned().size() == 0;
+    }
+
+    public Player findWinner() {
+        Map<Player, Integer> playerPieceNums = new HashMap<>();
+        for (int i = 0; i < grid.getCells().length; i++) {
+            for (int j = 0; j < grid.getCells()[i].length; j++) {
+                if (grid.getCells()[i][j].hasPiece()) {
+                    for (Player player: players) {
+                        if (player.getColor().equals(grid.getCells()[i][j].getPiece().getColor())) {
+                            if (playerPieceNums.containsKey(player)) {
+                                playerPieceNums.put(player, playerPieceNums.get(player)+1);
+                            } else {
+                                playerPieceNums.put(player, 1);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        Player winner = null;
+        int curVal = Integer.MIN_VALUE;
+        for(Map.Entry<Player, Integer> entry : playerPieceNums.entrySet()) {
+            if (entry.getValue() > curVal) {
+                winner = entry.getKey();
+            }
+        }
+        return winner;
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -25,13 +26,15 @@ public class GameController {
     @FXML
     public ListView<String> ownedPiecesListView, piecesToBuyListView;
     @FXML
-    public AnchorPane gameAnchorPane, buyAnchorPane, ownedPiecesAnchorPane;
+    public AnchorPane gameAnchorPane, buyAnchorPane, ownedPiecesAnchorPane, endScreenAnchorPane;
     @FXML
     public Button startBtn, buyPieceBtn, nextPlayerBuyBtn;
     @FXML
     public Label moneyLbl, buyViewPlayerNameLbl, playViewPlayerNameLbl;
     @FXML
     public TextArea buyPieceDescriptionTextArea, playPieceDescriptionTextArea;
+    @FXML
+    public ImageView endScreenImageView;
     private Game game;
     private MyScreenController myScreenController;
     private int selectedRow, selectedCol;
@@ -147,8 +150,11 @@ public class GameController {
         MyScreen buyView = new MyScreen("buyView");
         buyView.addFXMLElement(ownedPiecesAnchorPane);
         buyView.addFXMLElement(buyAnchorPane);
-
         myScreenController.add(buyView);
+
+        MyScreen endView = new MyScreen("endView");
+        endView.addFXMLElement(endScreenAnchorPane);
+        myScreenController.add(endView);
 
         myScreenController.activate("buyView");
 
@@ -164,6 +170,9 @@ public class GameController {
     }
 
     public void switchTurn() {
+        if (game.isOver()) {
+            activateEndScreen();
+        }
         selectedPiece = null;
         updatePlayView();
     }
@@ -173,6 +182,11 @@ public class GameController {
         updateOwnedPiecesListView(game.getCurrentPlayer());
         updatePlayPieceDescriptionTextArea();
         updatePlayViewPlayerNameLbl();
+    }
+
+    private void activateEndScreen() {
+        myScreenController.activate("endView");
+        endScreenImageView.setImage(makeImg("src/main/resources/com/example/generaltemplate/img/end_screen/" + game.findWinner().getName() + ".png"));
     }
 
     private void updatePlayViewPlayerNameLbl() {
