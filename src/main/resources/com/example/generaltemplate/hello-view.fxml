@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
     <children>
       <AnchorPane fx:id="gameAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
@@ -25,6 +25,11 @@
             <Label fx:id="playViewPlayerNameLbl" layoutX="325.0" layoutY="25.0" text="Playing Name">
                <font>
                   <Font size="38.0" />
+               </font>
+            </Label>
+            <Label fx:id="turnsLeftLbl" layoutX="600.0" layoutY="50.0" text="Turns Left:">
+               <font>
+                  <Font size="23.0" />
                </font>
             </Label>
          </children>

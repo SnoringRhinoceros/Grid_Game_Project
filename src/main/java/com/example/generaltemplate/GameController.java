@@ -30,7 +30,7 @@ public class GameController {
     @FXML
     public Button startBtn, buyPieceBtn, nextPlayerBuyBtn;
     @FXML
-    public Label moneyLbl, buyViewPlayerNameLbl, playViewPlayerNameLbl;
+    public Label moneyLbl, buyViewPlayerNameLbl, playViewPlayerNameLbl, turnsLeftLbl;
     @FXML
     public TextArea buyPieceDescriptionTextArea, playPieceDescriptionTextArea;
     @FXML
@@ -182,6 +182,11 @@ public class GameController {
         updateOwnedPiecesListView(game.getCurrentPlayer());
         updatePlayPieceDescriptionTextArea();
         updatePlayViewPlayerNameLbl();
+        updateTurnsLeftLbl();
+    }
+
+    private void updateTurnsLeftLbl() {
+        turnsLeftLbl.setText("Turns left: " + game.getTurnsLeft());
     }
 
     private void activateEndScreen() {

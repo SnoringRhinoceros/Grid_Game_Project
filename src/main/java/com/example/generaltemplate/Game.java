@@ -20,6 +20,7 @@ public class Game {
     private final int SHIELD_RANGE = 1;
     private final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
     private final int STARTING_MONEY = 100;
+    private final int MAX_TURN_NUMS = 5;
 
     public Game() {
         grid = new Grid();
@@ -177,7 +178,7 @@ public class Game {
     }
 
     public boolean isOver() {
-        return getCurrentPlayer().getPiecesOwned().size() == 0;
+        return getCurrentPlayer().getPiecesOwned().size() == 0 || turnNum+1 > MAX_TURN_NUMS;
     }
 
     public Player findWinner() {
@@ -200,12 +201,17 @@ public class Game {
         }
 
         Player winner = null;
-        int curVal = Integer.MIN_VALUE;
+        int curVal = -1;
         for(Map.Entry<Player, Integer> entry : playerPieceNums.entrySet()) {
             if (entry.getValue() > curVal) {
                 winner = entry.getKey();
+                curVal = entry.getValue();
             }
         }
         return winner;
+    }
+
+    public int getTurnsLeft() {
+        return MAX_TURN_NUMS - turnNum;
     }
 }
