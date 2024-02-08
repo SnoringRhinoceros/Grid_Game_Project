@@ -135,7 +135,7 @@ public class GameController {
             }
         }
         board.setAlignment(Pos.CENTER);
-        board.setGridLinesVisible(true);
+        board.setGridLinesVisible(false);
 
 
 

@@ -1,7 +1,7 @@
 package com.example.generaltemplate;
 
 public enum TerrainTypes {
-    NONE("");
+    NONE("-fx-border-color: #000000;");
 
     private final String CSS;
     TerrainTypes(String CS) {
