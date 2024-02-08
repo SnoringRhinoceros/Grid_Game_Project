@@ -48,8 +48,17 @@ public class Game {
         return grid;
     }
 
-    public boolean normalPiecePlayable(int selectedRow, int selectedCol, Movement movement) {
-        return !grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece();
+    public boolean isPiecePlayable(PieceType pieceType, int selectedRow, int selectedCol, Movement movement) {
+        if ((selectedRow == 0 && selectedCol != grid.getCells()[0].length-1 && selectedCol != 0)
+                || (selectedCol == 0 && selectedRow != grid.getCells().length-1 && selectedRow != 0)
+                || (selectedRow == grid.getCells()[0].length-1 && selectedCol != 0 && selectedCol != grid.getCells()[0].length-1)
+                || (selectedCol == grid.getCells().length-1 && selectedRow != grid.getCells().length-1 && selectedRow != 0)) {
+            if (pieceType.equals(PieceType.EXPLODER) || pieceType.equals(PieceType.CHANGER) || pieceType.equals(PieceType.HORIZONTAL_SCORER)) {
+                return true;
+            }
+            return !grid.getCells()[selectedRow+movement.getRowMove()][selectedCol+movement.getColMove()].hasPiece();
+        }
+        return false;
     }
 
     public void playPiece(Player player, PieceType pieceType, int selectedRow, int selectedCol, Movement movement) {

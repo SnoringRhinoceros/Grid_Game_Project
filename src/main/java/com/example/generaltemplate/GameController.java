@@ -115,8 +115,9 @@ public class GameController {
                     movement = Movement.LEFT;
                 }
 
-                if (!game.isTurnOngoing() && (game.normalPiecePlayable(selectedRow, selectedCol, movement) || selectedPiece.equals(PieceType.EXPLODER))) {
+                if (!game.isTurnOngoing() && game.isPiecePlayable(selectedPiece, selectedRow, selectedCol, movement)) {
                     game.playPiece(game.getCurrentPlayer(), selectedPiece, selectedRow, selectedCol, movement);
+                    updatePlayView();
                     game.simulateTurn(this::switchTurn);
                 }
             }
