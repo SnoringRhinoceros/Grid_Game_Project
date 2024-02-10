@@ -14,13 +14,15 @@ public class Grid {
     private final Cell[][] cells;
     private final Button[][] buttons;
     private final Image BLANK_CELL_IMG = makeImg("src/main/resources/com/example/generaltemplate/img/background.png");
+    private final Image SIDES_IMG = makeImg("src/main/resources/com/example/generaltemplate/img/sides_background.png");
+    private final Image CORNER_IMG = makeImg("src/main/resources/com/example/generaltemplate/img/corner_background.png");
 
     public Grid() {
         cells = new Cell[GRID_SIZE][GRID_SIZE];
         buttons = new Button[GRID_SIZE][GRID_SIZE];
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
-                cells[row][col] = new Cell(TerrainTypes.NONE);
+                cells[row][col] = new Cell(BorderTypes.NONE);
                 buttons[row][col] = new Button();
                 buttons[row][col].setMinHeight(BUTTON_SIZE);
                 buttons[row][col].setMinWidth(BUTTON_SIZE);
@@ -37,12 +39,23 @@ public class Grid {
                 if (cells[row][col].hasPiece()) {
                     img = new ImageView(cells[row][col].getPiece().getImage());
                 } else {
-                    img = new ImageView(BLANK_CELL_IMG);
+
+                    if ((row == 0 && col != cells[0].length-1 && col != 0)
+                            || (col == 0 && row != cells.length-1 && row != 0)
+                            || (row == cells[0].length-1 && col != 0 && col != cells[0].length-1)
+                            || (col == cells.length-1 && row != cells.length-1 && row != 0)) {
+                        img = new ImageView(SIDES_IMG);
+                    } else if ((row == 0 && col == 0) || (row == 0 && col == cells[0].length-1)
+                            || (row == cells.length-1 && col == 0) || (row == cells.length-1 && col == cells[0].length-1)) {
+                        img = new ImageView(CORNER_IMG);
+                    } else {
+                        img = new ImageView(BLANK_CELL_IMG);
+                    }
                 }
                 img.setFitHeight(BUTTON_SIZE-2);
                 img.setPreserveRatio(true);
                 buttons[row][col].setGraphic(img);
-                buttons[row][col].setStyle(cells[row][col].getTerrainType().getCSS());
+                buttons[row][col].setStyle(cells[row][col].getBorderType().getCSS());
             }
         }
     }

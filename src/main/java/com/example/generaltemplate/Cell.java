@@ -1,20 +1,20 @@
 package com.example.generaltemplate;
 
 public class Cell {
-    private TerrainTypes terrainType;
+    private BorderTypes borderType;
     private Piece piece;
     private boolean shielded;
 
-    public Cell(TerrainTypes terrainType) {
-        this.terrainType = terrainType;
+    public Cell(BorderTypes borderType) {
+        this.borderType = borderType;
     }
 
-    public TerrainTypes getTerrainType() {
-        return terrainType;
+    public BorderTypes getBorderType() {
+        return borderType;
     }
 
-    public void setTerrainType(TerrainTypes terrainType) {
-        this.terrainType = terrainType;
+    public void setBorderType(BorderTypes borderType) {
+        this.borderType = borderType;
     }
 
     public Piece getPiece() {
