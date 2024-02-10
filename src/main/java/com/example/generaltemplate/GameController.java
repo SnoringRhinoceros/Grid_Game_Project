@@ -207,12 +207,21 @@ public class GameController {
         updatePiecesToBuyListView();
         updateBuyViewPlayerStuff(player);
         updateBuyViewPlayerNameLbl();
+
     }
 
     private void updateBuyViewPlayerStuff(Player player) {
         updateMoneyLbl();
         updateOwnedPiecesListView(player);
         updateBuyPieceDescriptionTextArea();
+        updateBuyPieceBtnDisable(player);
+    }
+
+    private void updateBuyPieceBtnDisable(Player player) {
+        buyPieceBtn.setDisable(false);
+        if (selectedPiece != null && player.getMoney()-selectedPiece.getPrice() < 0) {
+            buyPieceBtn.setDisable(true);
+        }
     }
 
     private void updateBuyPieceDescriptionTextArea() {
