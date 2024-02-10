@@ -191,6 +191,8 @@ public class Game {
             if (entry.getValue() > curVal) {
                 winner = entry.getKey();
                 curVal = entry.getValue();
+            } else if (entry.getValue() == curVal) {
+                winner = null;
             }
         }
         return winner;

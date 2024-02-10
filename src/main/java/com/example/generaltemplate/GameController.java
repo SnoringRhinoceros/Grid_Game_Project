@@ -190,7 +190,11 @@ public class GameController {
 
     private void activateEndScreen() {
         myScreenController.activate("endView");
-        endScreenImageView.setImage(makeImg("src/main/resources/com/example/generaltemplate/img/end_screen/" + game.findWinner().getName() + ".png"));
+        if (game.findWinner() == null) {
+            endScreenImageView.setImage(makeImg("src/main/resources/com/example/generaltemplate/img/end_screen/draw.png"));
+        } else {
+            endScreenImageView.setImage(makeImg("src/main/resources/com/example/generaltemplate/img/end_screen/" + game.findWinner().getName() + ".png"));
+        }
     }
 
     private void updatePlayViewPlayerNameLbl() {
