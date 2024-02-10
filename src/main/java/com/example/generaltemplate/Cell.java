@@ -2,7 +2,7 @@ package com.example.generaltemplate;
 
 public class Cell {
     private BorderTypes borderType;
-    private Piece piece;
+    private SolidObject solidObject;
     private boolean shielded;
 
     public Cell(BorderTypes borderType) {
@@ -17,16 +17,22 @@ public class Cell {
         this.borderType = borderType;
     }
 
-    public Piece getPiece() {
-        return piece;
-    }
+    public SolidObject getSolidObject() {return solidObject;}
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
+    public void setSolidObject(SolidObject solidObject) {
+        this.solidObject = solidObject;
     }
 
     public boolean hasPiece() {
-        return piece != null;
+        return solidObject != null && solidObject.getClass().equals(Piece.class);
+    }
+
+    public boolean hasSolidObject() {
+        return solidObject != null;
+    }
+
+    public Piece getPiece() {
+        return (Piece) solidObject;
     }
 
     public boolean isNotShielded() {

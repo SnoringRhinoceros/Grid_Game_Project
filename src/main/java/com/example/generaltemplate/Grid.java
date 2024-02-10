@@ -37,7 +37,7 @@ public class Grid {
             for (int col = 0; col < cells[row].length; col++) {
                 ImageView img;
                 if (cells[row][col].hasPiece()) {
-                    img = new ImageView(cells[row][col].getPiece().getImage());
+                    img = new ImageView(((Piece) cells[row][col].getSolidObject()).getImage());
                 } else {
 
                     if ((row == 0 && col != cells[0].length-1 && col != 0)
@@ -61,8 +61,8 @@ public class Grid {
     }
 
     public void movePiece(int oldRow, int oldCol, int newRow, int newCol) {
-        cells[newRow][newCol].setPiece(cells[oldRow][oldCol].getPiece());
-        cells[oldRow][oldCol].setPiece(null);
+        cells[newRow][newCol].setSolidObject(cells[oldRow][oldCol].getSolidObject());
+        cells[oldRow][oldCol].setSolidObject(null);
     }
 
     public boolean checkLocValid(int row, int col) {
@@ -97,7 +97,7 @@ public class Grid {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 if (cells[i][j].hasPiece()) {
-                    if (pieceType.equals(cells[i][j].getPiece().getPieceType())) {
+                    if (pieceType.equals(((Piece) cells[i][j].getSolidObject()).getPieceType())) {
                         int[] loc = {i, j};
                         result.add(loc);
                     }

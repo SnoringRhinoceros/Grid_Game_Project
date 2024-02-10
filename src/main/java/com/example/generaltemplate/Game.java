@@ -47,7 +47,7 @@ public class Game {
 
     public void playPiece(Player player, PieceType pieceType, int selectedRow, int selectedCol, Movement movement) {
         player.getPiecesOwned().remove(pieceType);
-        grid.getCells()[selectedRow][selectedCol].setPiece(new Piece(pieceType, player.getColor(), movement));
+        grid.getCells()[selectedRow][selectedCol].setSolidObject(new Piece(pieceType, player.getColor(), movement));
         update();
     }
 
@@ -85,17 +85,17 @@ public class Game {
                                         if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
                                                 if (grid.getCells()[loc[0]][loc[1]].isNotShielded()) {
-                                                    grid.getCells()[loc[0]][loc[1]].setPiece(null);
+                                                    grid.getCells()[loc[0]][loc[1]].setSolidObject(null);
                                                 }
                                             }
-                                            grid.getCells()[row][col].setPiece(null);
+                                            grid.getCells()[row][col].setSolidObject(null);
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
                                             for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
                                                 if (cell.isNotShielded()) {
                                                     grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
                                                 }
                                             }
-                                            grid.getCells()[row][col].setPiece(null);
+                                            grid.getCells()[row][col].setSolidObject(null);
                                         } else if (cell.getPiece().getPieceType().equals(PieceType.HORIZONTAL_SCORER)) {
                                             for (Cell sCell : grid.getCells()[row]) {
                                                 if (sCell.hasPiece()) {
@@ -104,7 +104,7 @@ public class Game {
                                                     }
                                                 }
                                             }
-                                            grid.getCells()[row][col].setPiece(null);
+                                            grid.getCells()[row][col].setSolidObject(null);
                                         }
                                         updateShieldedCells();
                                     }

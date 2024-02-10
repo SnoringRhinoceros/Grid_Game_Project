@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import static com.example.generaltemplate.GameController.makeImg;
 
-public class Piece {
+public class Piece extends SolidObject{
     private final PieceType pieceType;
     private Colors color;
     private Image image;
