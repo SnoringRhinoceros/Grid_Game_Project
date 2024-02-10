@@ -39,7 +39,7 @@ public class Grid {
                 } else {
                     img = new ImageView(BLANK_CELL_IMG);
                 }
-                img.setFitHeight(BUTTON_SIZE);
+                img.setFitHeight(BUTTON_SIZE-2);
                 img.setPreserveRatio(true);
                 buttons[row][col].setGraphic(img);
                 buttons[row][col].setStyle(cells[row][col].getTerrainType().getCSS());
