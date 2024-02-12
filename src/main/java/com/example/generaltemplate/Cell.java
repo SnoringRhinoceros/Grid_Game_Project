@@ -31,6 +31,8 @@ public class Cell {
         return solidObject != null;
     }
 
+    public boolean hasStructure() {return solidObject != null && solidObject.getClass().equals(Structure.class);}
+
     public Piece getPiece() {
         return (Piece) solidObject;
     }

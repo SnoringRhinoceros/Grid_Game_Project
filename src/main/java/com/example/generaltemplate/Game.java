@@ -73,40 +73,45 @@ public class Game {
                             Cell cell = grid.getCells()[row][col];
                             if (cell.hasPiece()) {
                                 if (cell.getPiece().getMovement() != Movement.STILL) {
-                                    if (cell.getPiece().isNotAlreadyMoved() && grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
-                                        cell.getPiece().setAlreadyMoved(true);
-                                        grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
-                                        noPiecesMoved = false;
-                                    } else if (cell.getPiece().isNotAlreadyMoved()){
-                                        // piece logic is here
+                                    if (cell.getPiece().isNotAlreadyMoved()) {
+                                        if (grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
+                                            cell.getPiece().setAlreadyMoved(true);
+                                            grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
+                                            noPiecesMoved = false;
+                                        } else if (grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].hasStructure()
+                                                && ((Structure) grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)) {
+                                            // do stuff
+                                        }else {
+                                            // piece logic is here
 
-                                        updateShieldedCells();
-                                        cell.getPiece().setMovement(Movement.STILL);
-                                        if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
-                                            for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
-                                                if (grid.getCells()[loc[0]][loc[1]].isNotShielded()) {
-                                                    grid.getCells()[loc[0]][loc[1]].setSolidObject(null);
-                                                }
-                                            }
-                                            grid.getCells()[row][col].setSolidObject(null);
-                                        } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
-                                            for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
-                                                if (cell.isNotShielded()) {
-                                                    grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
-                                                }
-                                            }
-                                            grid.getCells()[row][col].setSolidObject(null);
-                                        } else if (cell.getPiece().getPieceType().equals(PieceType.HORIZONTAL_SCORER)) {
-                                            for (Cell sCell : grid.getCells()[row]) {
-                                                if (sCell.hasPiece()) {
-                                                    if (cell.isNotShielded()) {
-                                                        sCell.getPiece().setColor(cell.getPiece().getColor());
+                                            updateShieldedCells();
+                                            cell.getPiece().setMovement(Movement.STILL);
+                                            if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
+                                                for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
+                                                    if (grid.getCells()[loc[0]][loc[1]].isNotShielded()) {
+                                                        grid.getCells()[loc[0]][loc[1]].setSolidObject(null);
                                                     }
                                                 }
+                                                grid.getCells()[row][col].setSolidObject(null);
+                                            } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
+                                                for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
+                                                    if (cell.isNotShielded()) {
+                                                        grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
+                                                    }
+                                                }
+                                                grid.getCells()[row][col].setSolidObject(null);
+                                            } else if (cell.getPiece().getPieceType().equals(PieceType.HORIZONTAL_SCORER)) {
+                                                for (Cell sCell : grid.getCells()[row]) {
+                                                    if (sCell.hasPiece()) {
+                                                        if (cell.isNotShielded()) {
+                                                            sCell.getPiece().setColor(cell.getPiece().getColor());
+                                                        }
+                                                    }
+                                                }
+                                                grid.getCells()[row][col].setSolidObject(null);
                                             }
-                                            grid.getCells()[row][col].setSolidObject(null);
+                                            updateShieldedCells();
                                         }
-                                        updateShieldedCells();
                                     }
                                 }
                             }

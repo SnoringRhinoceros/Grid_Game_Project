@@ -30,7 +30,7 @@ public class Grid {
                 buttons[row][col].setMaxWidth(BUTTON_SIZE);
             }
         }
-        cells[5][5].setSolidObject(new Structure(StructureType.RICOCHET));
+        cells[5][5].setSolidObject(new Structure(StructureType.RICOCHET, 1));
     }
 
     public void update() {
@@ -40,7 +40,6 @@ public class Grid {
                 if (cells[row][col].hasSolidObject()) {
                     img = new ImageView(cells[row][col].getSolidObject().getImg());
                 } else {
-
                     if ((row == 0 && col != cells[0].length-1 && col != 0)
                             || (col == 0 && row != cells.length-1 && row != 0)
                             || (row == cells[0].length-1 && col != 0 && col != cells[0].length-1)

@@ -1,13 +1,17 @@
 package com.example.generaltemplate;
 
-import static com.example.generaltemplate.GameController.makeImg;
-
 public class Structure extends SolidObject{
     private final StructureType structureType;
+    private final int slope;
 
-    public Structure(StructureType structureType) {
-        super("src/main/resources/com/example/generaltemplate/img/structures/" + structureType.getName() + "/right.png");
+    public Structure(StructureType structureType, int slope) {
+        super("src/main/resources/com/example/generaltemplate/img/structures/" + structureType.getName() + "/" + slope + ".png");
         this.structureType = structureType;
+        this.slope = slope;
+    }
+
+    public int getSlope() {
+        return slope;
     }
 
     public StructureType getStructureType() {
