@@ -30,14 +30,15 @@ public class Grid {
                 buttons[row][col].setMaxWidth(BUTTON_SIZE);
             }
         }
+        cells[5][5].setSolidObject(new Structure(StructureType.RICOCHET));
     }
 
     public void update() {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
                 ImageView img;
-                if (cells[row][col].hasPiece()) {
-                    img = new ImageView(((Piece) cells[row][col].getSolidObject()).getImage());
+                if (cells[row][col].hasSolidObject()) {
+                    img = new ImageView(cells[row][col].getSolidObject().getImg());
                 } else {
 
                     if ((row == 0 && col != cells[0].length-1 && col != 0)
@@ -66,7 +67,7 @@ public class Grid {
     }
 
     public boolean checkLocValid(int row, int col) {
-        return 1 <= row && row < cells.length-1 && 1 <= col && col < cells[0].length-1 && !cells[row][col].hasPiece();
+        return 1 <= row && row < cells.length-1 && 1 <= col && col < cells[0].length-1 && !cells[row][col].hasSolidObject();
     }
 
     public Cell[][] getCells() {
