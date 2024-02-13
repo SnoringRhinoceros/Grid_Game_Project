@@ -74,13 +74,15 @@ public class Game {
                             if (cell.hasPiece()) {
                                 if (cell.getPiece().getMovement() != Movement.STILL) {
                                     if (cell.getPiece().isNotAlreadyMoved()) {
-                                        if (grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
+                                        if (grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].hasStructure()
+                                                && ((Structure) grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)) {
+                                            Structure struct = (Structure) grid.getCells()[row + cell.getPiece().getMovement().getRowMove()][col + cell.getPiece().getMovement().getColMove()].getSolidObject();
+                                            cell.getPiece().setMovement(Movement.getMovement(cell.getPiece().getMovement().getColMove() * struct.getSlope() * -1, cell.getPiece().getMovement().getRowMove() * struct.getSlope() * -1));
+                                            noPiecesMoved = false;
+                                        } else if (grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
                                             cell.getPiece().setAlreadyMoved(true);
                                             grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
                                             noPiecesMoved = false;
-                                        } else if (grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].hasStructure()
-                                                && ((Structure) grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)) {
-                                            // do stuff
                                         }else {
                                             // piece logic is here
 

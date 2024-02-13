@@ -18,4 +18,13 @@ public enum Movement {
     public int getColMove() {
         return colMove;
     }
+
+    public static Movement getMovement(int row, int col) {
+        for (Movement movement: values()) {
+            if (row == movement.rowMove && col == movement.colMove) {
+                return movement;
+            }
+        }
+        throw new RuntimeException("No movement exists");
+    }
 }
