@@ -30,7 +30,10 @@ public class Grid {
                 buttons[row][col].setMaxWidth(BUTTON_SIZE);
             }
         }
-        cells[5][5].setSolidObject(new Structure(StructureType.RICOCHET, -1));
+        cells[8][5].setSolidObject(new Structure(StructureType.RICOCHET, -1));
+        cells[7][4].setSolidObject(new Structure(StructureType.RICOCHET, 1));
+        cells[7][7].setSolidObject(new Structure(StructureType.RICOCHET, -1));
+        cells[8][6].setSolidObject(new Structure(StructureType.RICOCHET, 1));
     }
 
     public void update() {

@@ -9,6 +9,7 @@ public class Piece extends SolidObject{
     private Colors color;
     private Movement movement;
     private boolean alreadyMoved;
+    private int bounceNum = 0;
 
     public Piece(PieceType pieceType, Colors color, Movement movement) {
         super("src/main/resources/com/example/generaltemplate/img/" + color.getName() +"/"+ pieceType.getName().toLowerCase() + " piece.png");
@@ -22,6 +23,9 @@ public class Piece extends SolidObject{
     }
 
     public void setMovement(Movement movement) {
+        if (movement.equals(Movement.STILL)) {
+            clearBounceNum();
+        }
         this.movement = movement;
     }
 
@@ -44,5 +48,17 @@ public class Piece extends SolidObject{
 
     public void setAlreadyMoved(boolean alreadyMoved) {
         this.alreadyMoved = alreadyMoved;
+    }
+
+    public int getBounceNum() {
+        return bounceNum;
+    }
+
+    public void incrementBounceNum() {
+        bounceNum++;
+    }
+
+    private void clearBounceNum() {
+        bounceNum = 0;
     }
 }

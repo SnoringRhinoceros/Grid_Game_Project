@@ -21,6 +21,7 @@ public class Game {
     private final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
     private final int STARTING_MONEY = 100;
     private final int MAX_TURN_NUMS = 5;
+    private final int MAX_BOUNCES = 2;
 
     public Game() {
         grid = new Grid();
@@ -75,10 +76,12 @@ public class Game {
                                 if (cell.getPiece().getMovement() != Movement.STILL) {
                                     if (cell.getPiece().isNotAlreadyMoved()) {
                                         if (grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].hasStructure()
-                                                && ((Structure) grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)) {
+                                                && ((Structure) grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)
+                                                && cell.getPiece().getBounceNum() < MAX_BOUNCES) {
                                             Structure struct = (Structure) grid.getCells()[row + cell.getPiece().getMovement().getRowMove()][col + cell.getPiece().getMovement().getColMove()].getSolidObject();
                                             cell.getPiece().setMovement(Movement.getMovement(cell.getPiece().getMovement().getColMove() * struct.getSlope() * -1, cell.getPiece().getMovement().getRowMove() * struct.getSlope() * -1));
                                             noPiecesMoved = false;
+                                            cell.getPiece().incrementBounceNum();
                                         } else if (grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
                                             cell.getPiece().setAlreadyMoved(true);
                                             grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
