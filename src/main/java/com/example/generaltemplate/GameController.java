@@ -38,6 +38,7 @@ public class GameController {
     private MyScreenController myScreenController;
     private int selectedRow, selectedCol;
     private PieceType selectedPiece;
+    private int hoveredRow, hoveredCol;
     private ListView<String> selectedListView;
 
     public static Image makeImg(String imgPath) {
@@ -126,12 +127,18 @@ public class GameController {
         };
 
 
-
         game = new Game();
         for (int i = 0; i < game.getGrid().getButtons().length; i++) {
             for (int j = 0; j < game.getGrid().getButtons()[i].length; j++) {
                 board.add(game.getGrid().getButtons()[i][j], j, i);
                 game.getGrid().getButtons()[i][j].setOnAction(handleBoardClick);
+                int finalI = i;
+                int finalJ = j;
+                game.getGrid().getButtons()[i][j].hoverProperty().addListener((event) -> {
+                    hoveredRow = finalI;
+                    hoveredCol = finalJ;
+                    updatePlayView();
+                });
             }
         }
         board.setAlignment(Pos.CENTER);
@@ -177,11 +184,15 @@ public class GameController {
     }
 
     private void updatePlayView() {
-        game.update();
+        updatePlayViewBoard();
         updateOwnedPiecesListView(game.getCurrentPlayer());
         updatePlayPieceDescriptionTextArea();
         updatePlayViewPlayerNameLbl();
         updateTurnsLeftLbl();
+    }
+
+    private void updatePlayViewBoard() {
+        game.update(hoveredRow, hoveredCol);
     }
 
     private void updateTurnsLeftLbl() {

@@ -155,8 +155,8 @@ public class Game {
         return players.get(turnNum % players.size());
     }
 
-    public void update() {
-        grid.update();
+    public void update(int hoveredRow, int hoveredCol) {
+        grid.update(hoveredRow, hoveredCol);
     }
 
     public boolean isTurnOngoing() {
