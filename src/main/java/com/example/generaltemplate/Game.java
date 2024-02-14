@@ -49,7 +49,7 @@ public class Game {
     public void playPiece(Player player, PieceType pieceType, int selectedRow, int selectedCol, Movement movement) {
         player.getPiecesOwned().remove(pieceType);
         grid.getCells()[selectedRow][selectedCol].setSolidObject(new Piece(pieceType, player.getColor(), movement));
-        update();
+        grid.update();
     }
 
     public void simulateTurn(Runnable endFunc) {
@@ -128,35 +128,74 @@ public class Game {
                         endFunc.run();
                         stop();
                     }
-                    update();
+                    grid.update();
                     simulationStartTime = System.nanoTime();
                 }
             }
         }.start();
     }
 
-        public void updateShieldedCells() {
-            for (int i = 0; i < grid.getCells().length; i++) {
-                for (int j = 0; j < grid.getCells()[i].length; j++) {
-                    grid.getCells()[i][j].setShielded(false);
-                }
+    public void updateShieldedCells() {
+        for (int i = 0; i < grid.getCells().length; i++) {
+            for (int j = 0; j < grid.getCells()[i].length; j++) {
+                grid.getCells()[i][j].setShielded(false);
             }
+        }
 
-            for (int[] shieldLoc : grid.getAllPieceLocsOfType(PieceType.SHIELD)) {
-                for (int[] pieceLoc : grid.getNearbyPieceLocs(shieldLoc[0], shieldLoc[1], SHIELD_RANGE)) {
-                    if (grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getColor().equals(grid.getCells()[shieldLoc[0]][shieldLoc[1]].getPiece().getColor()) && PROTECTED_PIECE_TYPES.contains(grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getPieceType())) {
-                        grid.getCells()[pieceLoc[0]][pieceLoc[1]].setShielded(true);
-                    }
+        for (int[] shieldLoc : grid.getAllPieceLocsOfType(PieceType.SHIELD)) {
+            for (int[] pieceLoc : grid.getNearbyPieceLocs(shieldLoc[0], shieldLoc[1], SHIELD_RANGE)) {
+                if (grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getColor().equals(grid.getCells()[shieldLoc[0]][shieldLoc[1]].getPiece().getColor()) && PROTECTED_PIECE_TYPES.contains(grid.getCells()[pieceLoc[0]][pieceLoc[1]].getPiece().getPieceType())) {
+                    grid.getCells()[pieceLoc[0]][pieceLoc[1]].setShielded(true);
                 }
             }
         }
+    }
+
+    private void updateBoardPieceTrajectory(PieceType selectedPiece, int hoveredRow, int hoveredCol) {
+        if (selectedPiece != null) {
+            int pieceRow = hoveredRow;
+            int pieceCol = hoveredCol;
+            Movement pieceMovement = getPieceMovementBasedOnSpawn(hoveredRow, hoveredCol);
+            int bounceNum = 0;
+            while (pieceMovement != Movement.STILL) {
+                if (grid.getCells()[pieceRow+pieceMovement.getRowMove()][pieceCol+pieceMovement.getColMove()].hasStructure()
+                        && ((Structure) grid.getCells()[pieceRow+pieceMovement.getRowMove()][pieceCol+pieceMovement.getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)
+                        && bounceNum < MAX_BOUNCES) {
+                    Structure struct = (Structure) grid.getCells()[pieceRow + pieceMovement.getRowMove()][pieceCol + pieceMovement.getColMove()].getSolidObject();
+                    pieceMovement = Movement.getMovement(pieceMovement.getColMove() * struct.getSlope() * -1, pieceMovement.getRowMove() * struct.getSlope() * -1);
+                    bounceNum++;
+                } else if (grid.checkLocValid(pieceRow+pieceMovement.getRowMove(), pieceCol+pieceMovement.getColMove())) {
+                    pieceRow += pieceMovement.getRowMove();
+                    pieceCol += pieceMovement.getColMove();
+                    grid.getCells()[pieceRow][pieceCol].setBorderType(BorderTypes.HOVERED);
+                }else {
+                    pieceMovement = Movement.STILL;
+                }
+            }
+        }
+    }
+
 
     public Player getCurrentPlayer() {
         return players.get(turnNum % players.size());
     }
 
-    public void update(int hoveredRow, int hoveredCol) {
-        grid.update(hoveredRow, hoveredCol);
+    public void update(PieceType selectedPiece, int hoveredRow, int hoveredCol) {
+        boolean buttonHovered = false;
+        for (int i = 0; i < grid.getCells().length; i++) {
+            for (int j = 0; j < grid.getCells()[i].length; j++) {
+                if (grid.getButtons()[j][i].isHover()) {
+                    buttonHovered = true;
+                    grid.getCells()[j][i].setBorderType(BorderTypes.HOVERED);
+                } else {
+                    grid.getCells()[j][i].setBorderType(BorderTypes.NONE);
+                }
+            }
+        }
+        if (buttonHovered) {
+            updateBoardPieceTrajectory(selectedPiece, hoveredRow, hoveredCol);
+        }
+        grid.update();
     }
 
     public boolean isTurnOngoing() {
@@ -210,5 +249,19 @@ public class Game {
 
     public int getTurnsLeft() {
         return MAX_TURN_NUMS - turnNum;
+    }
+
+    public Movement getPieceMovementBasedOnSpawn(int row, int col) {
+        Movement movement = Movement.STILL;
+        if (row == 0) {
+            movement = Movement.DOWN;
+        } else if (row == grid.getCells().length-1) {
+            movement = Movement.UP;
+        } else if (col == 0) {
+            movement = Movement.RIGHT;
+        } else if (col == grid.getCells()[0].length-1) {
+            movement = Movement.LEFT;
+        }
+        return movement;
     }
 }

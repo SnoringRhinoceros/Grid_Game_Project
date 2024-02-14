@@ -107,17 +107,7 @@ public class GameController {
             System.out.println(selectedRow + "," + selectedCol);
 
             if (selectedPiece != null) {
-                Movement movement = Movement.STILL;
-                if (selectedRow == 0) {
-                    movement = Movement.DOWN;
-                } else if (selectedRow == game.getGrid().getCells().length-1) {
-                    movement = Movement.UP;
-                } else if (selectedCol == 0) {
-                    movement = Movement.RIGHT;
-                } else if (selectedCol == game.getGrid().getCells()[0].length-1) {
-                    movement = Movement.LEFT;
-                }
-
+                Movement movement = game.getPieceMovementBasedOnSpawn(selectedRow, selectedCol);
                 if (!game.isTurnOngoing() && game.isPiecePlayable(selectedPiece, selectedRow, selectedCol, movement)) {
                     game.playPiece(game.getCurrentPlayer(), selectedPiece, selectedRow, selectedCol, movement);
                     updatePlayView();
@@ -192,7 +182,7 @@ public class GameController {
     }
 
     private void updatePlayViewBoard() {
-        game.update(hoveredRow, hoveredCol);
+        game.update(selectedPiece, hoveredRow, hoveredCol);
     }
 
     private void updateTurnsLeftLbl() {

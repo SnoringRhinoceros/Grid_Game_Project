@@ -31,19 +31,14 @@ public class Grid {
             }
         }
         cells[8][5].setSolidObject(new Structure(StructureType.RICOCHET, -1));
-        cells[7][4].setSolidObject(new Structure(StructureType.RICOCHET, 1));
-        cells[7][7].setSolidObject(new Structure(StructureType.RICOCHET, -1));
-        cells[8][6].setSolidObject(new Structure(StructureType.RICOCHET, 1));
+//        cells[7][4].setSolidObject(new Structure(StructureType.RICOCHET, 1));
+//        cells[7][7].setSolidObject(new Structure(StructureType.RICOCHET, -1));
+//        cells[8][6].setSolidObject(new Structure(StructureType.RICOCHET, 1));
     }
 
-    public void update(int hoveredRow, int hoveredCol) {
+    public void update() {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
-
-                if (row == hoveredRow && col == hoveredCol) {
-                    cells[row][col].setBorderType(BorderTypes.HOVERED);
-                }
-
                 ImageView img;
                 if (cells[row][col].hasSolidObject()) {
                     img = new ImageView(cells[row][col].getSolidObject().getImg());
