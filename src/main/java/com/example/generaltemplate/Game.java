@@ -15,13 +15,14 @@ public class Game {
 
 
     // constants ↓
-    private final int EXPLODER_RANGE = 3;
-    private final int CHANGER_RANGE = 2;
-    private final int SHIELD_RANGE = 1;
-    private final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
-    private final int STARTING_MONEY = 100;
-    private final int MAX_TURN_NUMS = 5;
-    private final int MAX_BOUNCES = 2;
+    public static final int EXPLODER_RANGE = 3;
+    public static final int CHANGER_RANGE = 2;
+    public static final int SHIELD_RANGE = 1;
+    public static final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
+    public static final int STARTING_MONEY = 100;
+    public static final int MAX_TURN_NUMS = 100;
+    public static final int MAX_BOUNCES = 2;
+    public static final int SUMMONER_RANGE = 1;
 
     public Game() {
         grid = new Grid();
@@ -125,6 +126,15 @@ public class Game {
                     if (noPiecesMoved) {
                         turnNum++;
                         turnOngoing = false;
+
+                        for (int i = 0; i < grid.getCells().length; i++) {
+                            for (int j = 0; j < grid.getCells()[i].length; j++) {
+                                Piece piece = grid.getCells()[i][j].getPiece();
+                                if (grid.getCells()[i][j].hasPiece() && piece.getPieceType().equals(PieceType.SUMMONER)) {
+                                    grid.getNearbyPieceLocs();
+                                }
+                            }
+                        }
                         endFunc.run();
                         stop();
                     }
