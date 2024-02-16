@@ -80,16 +80,32 @@ public class Grid {
         return buttons;
     }
 
-    public ArrayList<int[]> getNearbyPieceLocs(int row, int col, int range) {
+    private ArrayList<int[]> getNearbyLocs(int row, int col, int range) {
         ArrayList<int[]> result = new ArrayList<>();
         for (int i = Math.max(row-range, 0) ; i < Math.min(row+range+1, cells.length); i++) {
             for (int j = Math.max(col-range, 0); j < Math.min(col+range+1, cells[i].length); j++) {
-                if (!(i == row && j == col)) {
-                    if (cells[i][j].hasPiece()) {
-                        int[] loc = {i, j};
-                        result.add(loc);
-                    }
-                }
+                int[] loc = {i, j};
+                result.add(loc);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<int[]> getNearbyNoPieceLocs(int row, int col, int range) {
+        ArrayList<int[]> result = new ArrayList<>();
+        for (int[] loc : getNearbyLocs(row, col, range)) {
+            if (!cells[loc[0]][loc[1]].hasPiece()) {
+                result.add(loc);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<int[]> getNearbyPieceLocs(int row, int col, int range) {
+        ArrayList<int[]> result = new ArrayList<>();
+        for (int[] loc: getNearbyLocs(row, col, range)) {
+            if (cells[loc[0]][loc[1]].hasPiece()) {
+                result.add(loc);
             }
         }
         return result;

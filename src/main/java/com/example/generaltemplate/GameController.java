@@ -50,6 +50,10 @@ public class GameController {
         return null;
     }
 
+    public static int generateRandNum(int min, int max) {
+        return min + (int) (Math.random()*((max - min) + 1));
+    }
+
     @FXML
     public void initialize() {
         startBtn.setVisible(false);

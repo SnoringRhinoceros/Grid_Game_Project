@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 
 import java.util.*;
 
+import static com.example.generaltemplate.GameController.generateRandNum;
+
 public class Game {
     private final Grid grid;
     private long simulationStartTime;
@@ -129,9 +131,14 @@ public class Game {
 
                         for (int i = 0; i < grid.getCells().length; i++) {
                             for (int j = 0; j < grid.getCells()[i].length; j++) {
-                                Piece piece = grid.getCells()[i][j].getPiece();
-                                if (grid.getCells()[i][j].hasPiece() && piece.getPieceType().equals(PieceType.SUMMONER)) {
-                                    grid.getNearbyPieceLocs();
+                                if (grid.getCells()[i][j].hasPiece() && grid.getCells()[i][j].getPiece().getPieceType().equals(PieceType.SUMMONER)) {
+                                    for (int[] loc: grid.getNearbyNoPieceLocs(i, j, SUMMONER_RANGE)) {
+                                        if (grid.getCells()[loc[0]][loc[1]].isPiece);
+                                        // make the borders not spawnable
+                                        int[] spawnLoc = availableLocs.get(generateRandNum(0, availableLocs.size()-1));
+                                        grid.getCells()[spawnLoc[0]][spawnLoc[1]].setSolidObject(new Piece(PieceType.BASIC, getCurrentPlayer().getColor(), Movement.STILL));
+                                    }
+
                                 }
                             }
                         }
