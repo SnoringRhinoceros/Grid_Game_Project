@@ -226,7 +226,7 @@ public class Game {
                 }
             }
         }
-        if (buttonHovered) {
+        if (buttonHovered && !turnOngoing) {
             updateBoardPieceTrajectory(selectedPiece, hoveredRow, hoveredCol);
         }
         grid.update();
