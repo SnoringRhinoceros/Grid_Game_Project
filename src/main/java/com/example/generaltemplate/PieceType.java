@@ -9,7 +9,8 @@ public enum PieceType {
     CHANGER("Changer", 10, "Changes surrounding pieces in a " + CHANGER_RANGE + " radius to player's color"),
     HORIZONTAL_SCORER("Horizontal scorer", 25, "Changes all pieces in a row to player's color"),
     SHIELD("Shield", 10, "Protects certain pieces in a " + SHIELD_RANGE + " radius from changes"),
-    SUMMONER("Summoner", 25, "Summons new piece every turn in a " + SUMMONER_RANGE + " radius");
+    SUMMONER("Summoner", 25, "Summons new piece every turn in a " + SUMMONER_RANGE + " radius"),
+    WALL("Wall", 5, "Stationary structure that can be placed anywhere. Doesn't count towards total points.");
     private final String name;
     private final int price;
     private final String description;
