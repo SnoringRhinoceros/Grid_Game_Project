@@ -36,6 +36,10 @@ public class Grid {
 //        cells[8][6].setSolidObject(new Structure(StructureType.RICOCHET, 1));
     }
 
+    private boolean isLocBorder(int row, int col) {
+        return row == 0 || row == cells.length-1 || col == 0 || col == cells.length-1;
+    }
+
     public void update() {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
@@ -91,10 +95,10 @@ public class Grid {
         return result;
     }
 
-    public ArrayList<int[]> getNearbyNoPieceLocs(int row, int col, int range) {
+    public ArrayList<int[]> getNearbyAvailableLocs(int row, int col, int range) {
         ArrayList<int[]> result = new ArrayList<>();
         for (int[] loc : getNearbyLocs(row, col, range)) {
-            if (!cells[loc[0]][loc[1]].hasPiece()) {
+            if (!cells[loc[0]][loc[1]].hasPiece() && !isLocBorder(loc[0], loc[1])) {
                 result.add(loc);
             }
         }

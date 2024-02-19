@@ -62,7 +62,8 @@ public class Game {
             @Override
             public void handle(long now) {
                 if (now - simulationStartTime > 100000000.0) {
-                    boolean noPiecesMoved = true;
+
+                    // resets all pieces
                     for (int row = 0; row < grid.getCells().length; row++) {
                         for (int col = 0; col < grid.getCells()[row].length; col++) {
                             Cell cell = grid.getCells()[row][col];
@@ -72,37 +73,36 @@ public class Game {
                         }
                     }
 
+                    // simulates piece movement
                     for (int row = 0; row < grid.getCells().length; row++) {
                         for (int col = 0; col < grid.getCells()[row].length; col++) {
                             Cell cell = grid.getCells()[row][col];
                             if (cell.hasPiece()) {
                                 if (cell.getPiece().getMovement() != Movement.STILL) {
-                                    if (cell.getPiece().isNotAlreadyMoved()) {
+                                    if (!cell.getPiece().isAlreadyMoved()) {
+                                        // does either bouncing or moving
                                         if (grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].hasStructure()
                                                 && ((Structure) grid.getCells()[row+cell.getPiece().getMovement().getRowMove()][col+cell.getPiece().getMovement().getColMove()].getSolidObject()).getStructureType().equals(StructureType.RICOCHET)
                                                 && cell.getPiece().getBounceNum() < MAX_BOUNCES) {
                                             Structure struct = (Structure) grid.getCells()[row + cell.getPiece().getMovement().getRowMove()][col + cell.getPiece().getMovement().getColMove()].getSolidObject();
                                             cell.getPiece().setMovement(Movement.getMovement(cell.getPiece().getMovement().getColMove() * struct.getSlope() * -1, cell.getPiece().getMovement().getRowMove() * struct.getSlope() * -1));
-                                            noPiecesMoved = false;
                                             cell.getPiece().incrementBounceNum();
                                         } else if (grid.checkLocValid(row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove())) {
                                             cell.getPiece().setAlreadyMoved(true);
                                             grid.movePiece(row, col, row+cell.getPiece().getMovement().getRowMove(), col+cell.getPiece().getMovement().getColMove());
-                                            noPiecesMoved = false;
-                                        }else {
-                                            // piece logic is here
-
+                                        } else {
+                                            // piece stopped moving logic is here
                                             updateShieldedCells();
                                             cell.getPiece().setMovement(Movement.STILL);
                                             if (cell.getPiece().getPieceType().equals(PieceType.EXPLODER)) {
-                                                for (int[] loc: grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
+                                                for (int[] loc : grid.getNearbyPieceLocs(row, col, EXPLODER_RANGE)) {
                                                     if (grid.getCells()[loc[0]][loc[1]].isNotShielded()) {
                                                         grid.getCells()[loc[0]][loc[1]].setSolidObject(null);
                                                     }
                                                 }
                                                 grid.getCells()[row][col].setSolidObject(null);
                                             } else if (cell.getPiece().getPieceType().equals(PieceType.CHANGER)) {
-                                                for (int[] loc: grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
+                                                for (int[] loc : grid.getNearbyPieceLocs(row, col, CHANGER_RANGE)) {
                                                     if (cell.isNotShielded()) {
                                                         grid.getCells()[loc[0]][loc[1]].getPiece().setColor(cell.getPiece().getColor());
                                                     }
@@ -119,34 +119,39 @@ public class Game {
                                                 grid.getCells()[row][col].setSolidObject(null);
                                             }
                                             updateShieldedCells();
+
+
+
+                                            // switches turn
+
+                                            // performs summons
+                                            for (int i = 0; i < grid.getCells().length; i++) {
+                                                for (int j = 0; j < grid.getCells()[i].length; j++) {
+                                                    Cell c = grid.getCells()[i][j];
+                                                    if (c.hasPiece() && c.getPiece().getPieceType().equals(PieceType.SUMMONER)) {
+                                                        ArrayList<int[]> availableLocs = grid.getNearbyAvailableLocs(i, j, SUMMONER_RANGE);
+                                                        if (!availableLocs.isEmpty()) {
+                                                            int[] spawnLoc = availableLocs.get(generateRandNum(0, availableLocs.size()-1));
+                                                            grid.getCells()[spawnLoc[0]][spawnLoc[1]].setSolidObject(new Piece(PieceType.BASIC, c.getPiece().getColor(), Movement.STILL));
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            grid.update();
+                                            turnNum++;
+                                            turnOngoing = false;
+                                            endFunc.run();
+                                            stop();
+                                            return;
                                         }
+                                        grid.update();
+                                        simulationStartTime = System.nanoTime();
                                     }
                                 }
                             }
                         }
                     }
-                    if (noPiecesMoved) {
-                        turnNum++;
-                        turnOngoing = false;
-
-                        for (int i = 0; i < grid.getCells().length; i++) {
-                            for (int j = 0; j < grid.getCells()[i].length; j++) {
-                                if (grid.getCells()[i][j].hasPiece() && grid.getCells()[i][j].getPiece().getPieceType().equals(PieceType.SUMMONER)) {
-                                    for (int[] loc: grid.getNearbyNoPieceLocs(i, j, SUMMONER_RANGE)) {
-                                        if (grid.getCells()[loc[0]][loc[1]].isPiece);
-                                        // make the borders not spawnable
-                                        int[] spawnLoc = availableLocs.get(generateRandNum(0, availableLocs.size()-1));
-                                        grid.getCells()[spawnLoc[0]][spawnLoc[1]].setSolidObject(new Piece(PieceType.BASIC, getCurrentPlayer().getColor(), Movement.STILL));
-                                    }
-
-                                }
-                            }
-                        }
-                        endFunc.run();
-                        stop();
-                    }
-                    grid.update();
-                    simulationStartTime = System.nanoTime();
                 }
             }
         }.start();

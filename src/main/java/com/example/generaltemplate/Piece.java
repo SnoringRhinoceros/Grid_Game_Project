@@ -42,8 +42,8 @@ public class Piece extends SolidObject{
         setImg("src/main/resources/com/example/generaltemplate/img/" + this.color.getName() +"/"+ pieceType.getName().toLowerCase() + " piece.png");
     }
 
-    public boolean isNotAlreadyMoved() {
-        return !alreadyMoved;
+    public boolean isAlreadyMoved() {
+        return alreadyMoved;
     }
 
     public void setAlreadyMoved(boolean alreadyMoved) {
