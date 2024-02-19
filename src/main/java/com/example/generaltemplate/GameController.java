@@ -110,10 +110,9 @@ public class GameController {
             selectedCol = GridPane.getColumnIndex((Button) event.getSource());
             System.out.println(selectedRow + "," + selectedCol);
 
-            if (selectedPiece != null) {
-                Movement movement = game.getPieceMovementBasedOnSpawn(selectedRow, selectedCol);
-                if (!game.isTurnOngoing() && game.isPiecePlayable(selectedPiece, selectedRow, selectedCol, movement)) {
-                    game.playPiece(game.getCurrentPlayer(), selectedPiece, selectedRow, selectedCol, movement);
+            if (selectedPiece != null && !game.isTurnOngoing()) {
+                if (game.isPiecePlayable(selectedPiece, selectedRow, selectedCol)) {
+                    game.playPiece(game.getCurrentPlayer(), selectedPiece, selectedRow, selectedCol);
                     updatePlayView();
                     game.simulateTurn(this::switchTurn);
                 }

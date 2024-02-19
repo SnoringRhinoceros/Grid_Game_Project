@@ -36,7 +36,7 @@ public class Grid {
 //        cells[8][6].setSolidObject(new Structure(StructureType.RICOCHET, 1));
     }
 
-    private boolean isLocBorder(int row, int col) {
+    public boolean isLocBorder(int row, int col) {
         return row == 0 || row == cells.length-1 || col == 0 || col == cells.length-1;
     }
 
