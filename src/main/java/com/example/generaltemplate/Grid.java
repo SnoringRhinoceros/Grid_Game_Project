@@ -48,6 +48,10 @@ public class Grid {
         return row == 0 || row == cells.length-1 || col == 0 || col == cells.length-1;
     }
 
+    public boolean isLocCorner(int row, int col) {
+        return  (col == 0 || col == cells[0].length-1) && (row == 0 || row == cells.length-1);
+    }
+
     public void update() {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {

@@ -40,7 +40,7 @@ public class Game {
         if (pieceType.equals(PieceType.WALL) && !grid.getCells()[selectedRow][selectedCol].hasPiece()) {
             return !grid.isLocBorder(selectedRow, selectedCol);
         }
-        if (grid.isLocBorder(selectedRow, selectedCol)) {
+        if (grid.isLocBorder(selectedRow, selectedCol) && !grid.isLocCorner(selectedRow, selectedCol)) {
             Movement movement = getPieceMovementBasedOnSpawn(selectedRow, selectedCol);
             if (pieceType.equals(PieceType.EXPLODER) || pieceType.equals(PieceType.CHANGER) || pieceType.equals(PieceType.HORIZONTAL_SCORER)) {
                 return true;
@@ -201,7 +201,7 @@ public class Game {
                 } else if (grid.checkLocValid(pieceRow+pieceMovement.getRowMove(), pieceCol+pieceMovement.getColMove())) {
                     pieceRow += pieceMovement.getRowMove();
                     pieceCol += pieceMovement.getColMove();
-                    grid.getCells()[pieceRow][pieceCol].setBorderType(BorderTypes.HOVERED);
+                    grid.getCells()[pieceRow][pieceCol].setBorderType(BorderTypes.PLAYABLE);
                 }else {
                     pieceMovement = Movement.STILL;
                 }
@@ -218,14 +218,19 @@ public class Game {
         boolean buttonHovered = false;
         for (int i = 0; i < grid.getCells().length; i++) {
             for (int j = 0; j < grid.getCells()[i].length; j++) {
-                if (grid.getButtons()[j][i].isHover()) {
+                if (!buttonHovered && grid.getButtons()[j][i].isHover()) {
                     buttonHovered = true;
-                    grid.getCells()[j][i].setBorderType(BorderTypes.HOVERED);
-                } else {
-                    grid.getCells()[j][i].setBorderType(BorderTypes.NONE);
                 }
+                grid.getCells()[j][i].setBorderType(BorderTypes.NONE);
             }
         }
+
+        if (selectedPiece != null && isPiecePlayable(selectedPiece, hoveredRow, hoveredCol)) {
+            grid.getCells()[hoveredRow][hoveredCol].setBorderType(BorderTypes.PLAYABLE);
+        } else {
+            grid.getCells()[hoveredRow][hoveredCol].setBorderType(BorderTypes.UNPLAYABLE);
+        }
+
         if (buttonHovered && !turnOngoing) {
             updateBoardPieceTrajectory(selectedPiece, hoveredRow, hoveredCol);
         }
