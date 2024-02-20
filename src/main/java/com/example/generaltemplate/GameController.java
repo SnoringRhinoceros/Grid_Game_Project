@@ -27,7 +27,7 @@ public class GameController {
     @FXML
     public AnchorPane gameAnchorPane, buyAnchorPane, ownedPiecesAnchorPane, endScreenAnchorPane;
     @FXML
-    public Button startBtn, buyPieceBtn, nextPlayerBuyBtn;
+    public Button startBtn, buyPieceBtn, nextPlayerBuyBtn, playAgainBtn;
     @FXML
     public Label moneyLbl, buyViewPlayerNameLbl, playViewPlayerNameLbl, turnsLeftLbl;
     @FXML
@@ -120,24 +120,7 @@ public class GameController {
         };
 
 
-        game = new Game();
-        for (int i = 0; i < game.getGrid().getButtons().length; i++) {
-            for (int j = 0; j < game.getGrid().getButtons()[i].length; j++) {
-                board.add(game.getGrid().getButtons()[i][j], j, i);
-                game.getGrid().getButtons()[i][j].setOnAction(handleBoardClick);
-                int finalI = i;
-                int finalJ = j;
-                game.getGrid().getButtons()[i][j].hoverProperty().addListener((event) -> {
-                    hoveredRow = finalI;
-                    hoveredCol = finalJ;
-                    updatePlayView();
-                });
-            }
-        }
-        board.setAlignment(Pos.CENTER);
-        board.setGridLinesVisible(false);
-
-
+        restartGame(handleBoardClick);
 
         myScreenController = new MyScreenController();
 
@@ -160,12 +143,44 @@ public class GameController {
         EventHandler<MouseEvent> startBtnClick = mouseEvent -> {
             selectedPiece = null;
             myScreenController.activate("playView");
+            startBtn.setVisible(false);
             updatePlayView();
         };
 
         startBtn.setOnMouseClicked(startBtnClick);
 
+
+        EventHandler<MouseEvent> handlePlayAgainBtnClick = event -> {
+            restartGame(handleBoardClick);
+            myScreenController.activate("buyView");
+            nextPlayerBuyBtn.setVisible(true);
+            updateBuyView(game.getCurrentBuyer());
+        };
+
+        playAgainBtn.setOnMouseClicked(handlePlayAgainBtnClick);
+
+
+
         updateBuyView(game.getCurrentBuyer());
+    }
+
+    private void restartGame(EventHandler<ActionEvent> handleBoardClick) {
+        game = new Game();
+        for (int i = 0; i < game.getGrid().getButtons().length; i++) {
+            for (int j = 0; j < game.getGrid().getButtons()[i].length; j++) {
+                board.add(game.getGrid().getButtons()[i][j], j, i);
+                game.getGrid().getButtons()[i][j].setOnAction(handleBoardClick);
+                int finalI = i;
+                int finalJ = j;
+                game.getGrid().getButtons()[i][j].hoverProperty().addListener((e) -> {
+                    hoveredRow = finalI;
+                    hoveredCol = finalJ;
+                    updatePlayView();
+                });
+            }
+        }
+        board.setAlignment(Pos.CENTER);
+        board.setGridLinesVisible(false);
     }
 
     public void switchTurn() {

@@ -55,6 +55,9 @@ public class Grid {
     public void update() {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
+                if (row == 7 && col == 18) {
+                    int foo = 1;
+                }
                 ImageView img;
                 if (cells[row][col].hasSolidObject()) {
                     img = new ImageView(cells[row][col].getSolidObject().getImg());

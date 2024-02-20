@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.generaltemplate.GameController">
     <children>
       <AnchorPane fx:id="gameAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
@@ -84,6 +84,11 @@
       <AnchorPane fx:id="endScreenAnchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
             <ImageView fx:id="endScreenImageView" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="playAgainBtn" layoutX="327.0" layoutY="408.0" mnemonicParsing="false" prefHeight="99.0" prefWidth="233.0" text="Play Again">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
     </children>
