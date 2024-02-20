@@ -20,7 +20,7 @@ public class Game {
     public static final int EXPLODER_RANGE = 3;
     public static final int CHANGER_RANGE = 2;
     public static final int SHIELD_RANGE = 1;
-    public static final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD);
+    public static final List<PieceType> PROTECTED_PIECE_TYPES = Arrays.asList(PieceType.BASIC, PieceType.SHIELD, PieceType.SUMMONER);
     public static final int STARTING_MONEY = 100;
     public static final int MAX_TURN_NUMS = 100;
     public static final int MAX_BOUNCES = 2;
